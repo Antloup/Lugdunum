@@ -1,4 +1,4 @@
-package com.lugdunum.heptartuflette.lugdunum;
+package com.lugdunum.heptartuflette.lugdunum.Activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -22,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.lugdunum.heptartuflette.lugdunum.R;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
