@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Lugdunum</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Lugdunum</string>
+    <string name="permission_message">Lugdunum a besoin de votre position pour vous suggérer des photos proches de vous.</string>
+    <string name="permission_message_title">Hey !</string>
+    <string name="ok">OK</string>
 </resources>
