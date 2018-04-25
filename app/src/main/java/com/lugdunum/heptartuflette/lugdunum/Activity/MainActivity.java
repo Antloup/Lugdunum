@@ -22,20 +22,67 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
 import com.lugdunum.heptartuflette.lugdunum.R;
+
+import java.util.Collection;
+
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
 //    private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
+    // Declare a variable for the cluster manager.
+    private ClusterManager<MyItem> mClusterManager;
+
+
+    private void setUpClusterer() {
+        //Set custom renderer
+        CustomClusterRenderer renderer = new CustomClusterRenderer(this, mMap, mClusterManager);
+
+        // Position the map.
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), 10));
+
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        mClusterManager = new ClusterManager<>(this, mMap);
+        mClusterManager.setRenderer(renderer);
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
+        // Add cluster items (markers) to the cluster manager.
+        addItems();
+    }
+
+    private void addItems() {
+
+        // Set some lat/lng coordinates to start with.
+        double lat = 51.5145160;
+        double lng = -0.1270060;
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        for (int i = 0; i < 10; i++) {
+            double offset = i / 60d;
+            lat = lat + offset;
+            lng = lng + offset;
+            MyItem offsetItem = new MyItem(lat, lng);
+            mClusterManager.addItem(offsetItem);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -58,9 +105,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        //Cluster
+        //setUpClusterer();
+
         // Add a marker in La Doua and move the camera
         LatLng laDoua = new LatLng(45.78216,4.87262);
         mMap.addMarker(new MarkerOptions().position(laDoua).title("Marker in La Doua").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pic_perso)));
+
+        LatLng ChezOuam = new LatLng(45.77773,4.87718);
+        mMap.addMarker(new MarkerOptions().position(laDoua).title("Marker in Chez Moi").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pic_perso)));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laDoua));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
