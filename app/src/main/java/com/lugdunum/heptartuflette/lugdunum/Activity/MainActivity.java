@@ -41,7 +41,7 @@ import com.lugdunum.heptartuflette.lugdunum.Utils.Map.ClusterItemPic;
 
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
 
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(this);
         // By observing the liveData, adding a new Place in the provider should draw the new marker
         placeProvider.getPlaces().observe(this, new Observer<Vector<Place>>() {
             @Override
@@ -211,6 +212,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void addOldPhoto() {
         Intent myIntent = new Intent(this, AddOldPhoto.class);
         startActivity(myIntent);
+    }
+
+    private void showOldPhoto() {
+        Intent myIntent = new Intent(this, ShowOldPhoto.class);
+        startActivity(myIntent);
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        showOldPhoto();
+        return true;
     }
 
 //    private LatLng getUserPosition() {

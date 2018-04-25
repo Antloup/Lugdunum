@@ -48,6 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.lugdunum.heptartuflette.lugdunum.Activity.MainActivity" />
         </activity>
+        <activity
+            android:name=".Activity.ShowOldPhoto"
+            android:label="@string/title_activity_show_old_photo"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
