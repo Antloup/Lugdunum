@@ -3,11 +3,14 @@ package com.lugdunum.heptartuflette.lugdunum.Activity;
 import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,6 +41,7 @@ import java.util.Vector;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
+    private static int RESULT_LOAD_IMAGE = 1;
 //    private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
     private Vector<Marker> markers;
@@ -57,6 +61,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 Snackbar.make(view, "TODO : Load activity to load a new image", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+//                addOldPhoto();
             }
         });
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -151,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 markers.add(mMap.addMarker(new MarkerOptions().position(p.getLocation()).title("Marqueur")));
             }
         }
+    }
+
+    private void addOldPhoto() {
+        Intent myIntent = new Intent(this, AddOldPhoto.class);
+        startActivity(myIntent);
     }
 
 //    private LatLng getUserPosition() {
