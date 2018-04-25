@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,7 +43,7 @@ import com.lugdunum.heptartuflette.lugdunum.Utils.Map.ClusterItemPic;
 
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,ClusterManager.OnClusterItemClickListener {
 
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // manager.
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterItemClickListener(this);
 
     }
 
@@ -190,8 +192,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addOldPhoto() {
-        Intent myIntent = new Intent(this, ShowOldPhoto.class);
+        Intent myIntent = new Intent(this, AddOldPhoto.class);
         startActivity(myIntent);
     }
 
+    @Override
+    public boolean onClusterItemClick(ClusterItem clusterItem) {
+        Intent myIntent = new Intent(this, ShowOldPhoto.class);
+        startActivity(myIntent);
+        return true;
+    }
 }
