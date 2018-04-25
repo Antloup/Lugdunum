@@ -35,23 +35,17 @@ import java.util.Collection;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
-//    private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
     // Declare a variable for the cluster manager.
     private ClusterManager<MyItem> mClusterManager;
 
 
     private void setUpClusterer() {
-        //Set custom renderer
-        CustomClusterRenderer renderer = new CustomClusterRenderer(this, mMap, mClusterManager);
-
-        // Position the map.
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), 10));
-
         // Initialize the manager with the context and the map.
         // (Activity extends context, so we can pass 'this' in the constructor.)
         mClusterManager = new ClusterManager<>(this, mMap);
-        mClusterManager.setRenderer(renderer);
+        // Set the renderer
+        mClusterManager.setRenderer(new CustomClusterRenderer(this, mMap, mClusterManager));
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
         mMap.setOnCameraIdleListener(mClusterManager);
@@ -64,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void addItems() {
 
         // Set some lat/lng coordinates to start with.
-        double lat = 51.5145160;
-        double lng = -0.1270060;
+        double lat = 45.78216;
+        double lng = 4.87262;
 
         // Add ten cluster items in close proximity, for purposes of this example.
         for (int i = 0; i < 10; i++) {
@@ -97,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
 
@@ -106,14 +99,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         //Cluster
-        //setUpClusterer();
+        setUpClusterer();
 
         // Add a marker in La Doua and move the camera
         LatLng laDoua = new LatLng(45.78216,4.87262);
-        mMap.addMarker(new MarkerOptions().position(laDoua).title("Marker in La Doua").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pic_perso)));
-
-        LatLng ChezOuam = new LatLng(45.77773,4.87718);
-        mMap.addMarker(new MarkerOptions().position(laDoua).title("Marker in Chez Moi").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pic_perso)));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laDoua));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -177,21 +166,4 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             // permissions this app might request.
         }
     }
-
-//    private LatLng getUserPosition() {
-//
-//
-//        mFusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//                        // Got last known location. In some rare situations this can be null.
-//                        if (location != null) {
-//                            // Logic to handle location object
-//                        }
-//                    }
-//                });
-//
-//
-//    }
 }

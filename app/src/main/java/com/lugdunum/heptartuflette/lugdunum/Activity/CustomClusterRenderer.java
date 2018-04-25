@@ -23,7 +23,6 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<MyItem> {
 
     @Override protected void onBeforeClusterItemRendered(MyItem item,
                                                          MarkerOptions markerOptions) {
-        //final BitmapDescriptor markerDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
-        //markerOptions.icon(markerDescriptor).snippet("Hey");
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pic_perso));
     }
 }
