@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addOldPhoto() {
-        Intent myIntent = new Intent(this, AddOldPhoto.class);
+        Intent myIntent = new Intent(this, ShowOldPhoto.class);
         startActivity(myIntent);
     }
 
