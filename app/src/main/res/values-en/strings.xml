@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lugdunum</string>
+    <string name="permission_message">Lugdunum needs your position to show you pictures close to you.</string>
+    <string name="title_activity_add_old_photo">Add an old photo</string>
+    <string name="old_pic_description">Your old picture</string>
+</resources>

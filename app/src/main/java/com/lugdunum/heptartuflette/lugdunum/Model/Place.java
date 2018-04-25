@@ -2,15 +2,15 @@ package com.lugdunum.heptartuflette.lugdunum.Model;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.List;
+import java.util.Vector;
 
 public class Place {
     private int id;
     private LatLng location;
-    private List<OldPhoto> oldPhotos;
-    private List<RecentPhoto> recentPhotos;
+    private Vector<OldPhoto> oldPhotos;
+    private Vector<RecentPhoto> recentPhotos;
 
-    public Place(int id, LatLng location, List<OldPhoto> oldPhotos, List<RecentPhoto> recentPhotos) {
+    public Place(int id, LatLng location, Vector<OldPhoto> oldPhotos, Vector<RecentPhoto> recentPhotos) {
         this.id = id;
         this.location = location;
         this.oldPhotos = oldPhotos;
@@ -21,11 +21,11 @@ public class Place {
         return location;
     }
 
-    public List<OldPhoto> getOldPhotos() {
+    public Vector<OldPhoto> getOldPhotos() {
         return oldPhotos;
     }
 
-    public List<RecentPhoto> getRecentPhotos() {
+    public Vector<RecentPhoto> getRecentPhotos() {
         return recentPhotos;
     }
 }
