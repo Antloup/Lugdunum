@@ -22,12 +22,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,8 +35,8 @@ import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.lugdunum.heptartuflette.lugdunum.R;
-
-import java.util.Collection;
+import com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomClusterRenderer;
+import com.lugdunum.heptartuflette.lugdunum.Utils.Map.ClusterItemPic;
 
 
 import java.util.Vector;
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Vector<Marker> markers;
     private PlaceProvider placeProvider;
     // Declare a variable for the cluster manager.
-    private ClusterManager<MyItem> mClusterManager;
+    private ClusterManager<ClusterItemPic> mClusterManager;
 
 
     private void setUpClusterer() {
@@ -66,25 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
 
-        // Add cluster items (markers) to the cluster manager.
-//        addItems();
     }
-
-//    private void addItems() {
-//
-//        // Set some lat/lng coordinates to start with.
-//        double lat = 45.78216;
-//        double lng = 4.87262;
-//
-//        // Add ten cluster items in close proximity, for purposes of this example.
-//        for (int i = 0; i < 10; i++) {
-//            double offset = i / 60d;
-//            lat = lat + offset;
-//            lng = lng + offset;
-//            MyItem offsetItem = new MyItem(lat, lng);
-//            mClusterManager.addItem(offsetItem);
-//        }
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(places != null){
             mClusterManager.clearItems();
             for(Place p : places){
-//                markers.add(mMap.addMarker(new MarkerOptions().position(p.getLocation()).title("Marqueur")));
                 mClusterManager.addItem(new MyItem(p.getLocation().latitude,p.getLocation().longitude));
             }
         }
