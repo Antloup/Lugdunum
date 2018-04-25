@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.clustering.Cluster;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
 import com.google.maps.android.clustering.ClusterItem;
@@ -41,7 +42,7 @@ import com.lugdunum.heptartuflette.lugdunum.Utils.Map.ClusterItemPic;
 
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -64,25 +65,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
 
-        // Add cluster items (markers) to the cluster manager.
-        // TODO replace this by adding real pictures
-        addItems();
-    }
-
-    private void addItems() {
-
-        // Set some lat/lng coordinates to start with.
-        double lat = 45.78216;
-        double lng = 4.87262;
-
-        // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            lat = lat + offset;
-            lng = lng + offset;
-            ClusterItemPic offsetItem = new ClusterItemPic(lat, lng);
-            mClusterManager.addItem(offsetItem);
-        }
     }
 
     @Override
@@ -101,12 +83,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 Snackbar.make(view, "TODO : Load activity to load a new image", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-//                addOldPhoto();
+//                Intent i = new Intent(
+//                        Intent.ACTION_PICK,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                addOldPhoto();
             }
         });
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -119,7 +101,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnMarkerClickListener(this);
+
+        //Cluster
+        setUpClusterer();
+
         // By observing the liveData, adding a new Place in the provider should draw the new marker
         placeProvider.getPlaces().observe(this, new Observer<Vector<Place>>() {
             @Override
@@ -127,14 +112,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 drawMarkers(places);
             }
         });
-        // Move the camera to the campus
-
-        //Cluster
-        setUpClusterer();
 
         // Add a marker in La Doua and move the camera
         LatLng laDoua = new LatLng(45.78216,4.87262);
 
+        // Move the camera to the campus
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laDoua));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -200,11 +182,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void drawMarkers(Vector<Place> places) {
         if(places != null){
-            for(Marker m : markers){
-                m.remove();
-            }
+            mClusterManager.clearItems();
             for(Place p : places){
-                markers.add(mMap.addMarker(new MarkerOptions().position(p.getLocation()).title("Marqueur")));
+                mClusterManager.addItem(new ClusterItemPic(p.getLocation().latitude,p.getLocation().longitude));
             }
         }
     }
@@ -214,31 +194,4 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(myIntent);
     }
 
-    private void showOldPhoto() {
-        Intent myIntent = new Intent(this, ShowOldPhoto.class);
-        startActivity(myIntent);
-    }
-
-    @Override
-    public boolean onMarkerClick(final Marker marker) {
-        showOldPhoto();
-        return true;
-    }
-
-//    private LatLng getUserPosition() {
-//
-//
-//        mFusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//                        // Got last known location. In some rare situations this can be null.
-//                        if (location != null) {
-//                            // Logic to handle location object
-//                        }
-//                    }
-//                });
-//
-//
-//    }
 }
