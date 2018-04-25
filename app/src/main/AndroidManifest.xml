@@ -8,6 +8,11 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -51,7 +56,10 @@
         <activity
             android:name=".Activity.ShowOldPhoto"
             android:label="@string/title_activity_show_old_photo"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.TakePhoto"
+            android:label="@string/title_activity_take_photo"></activity>
     </application>
 
 </manifest>
