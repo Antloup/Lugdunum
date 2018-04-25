@@ -67,24 +67,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(mClusterManager);
 
         // Add cluster items (markers) to the cluster manager.
-        addItems();
+//        addItems();
     }
 
-    private void addItems() {
-
-        // Set some lat/lng coordinates to start with.
-        double lat = 45.78216;
-        double lng = 4.87262;
-
-        // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            lat = lat + offset;
-            lng = lng + offset;
-            MyItem offsetItem = new MyItem(lat, lng);
-            mClusterManager.addItem(offsetItem);
-        }
-    }
+//    private void addItems() {
+//
+//        // Set some lat/lng coordinates to start with.
+//        double lat = 45.78216;
+//        double lng = 4.87262;
+//
+//        // Add ten cluster items in close proximity, for purposes of this example.
+//        for (int i = 0; i < 10; i++) {
+//            double offset = i / 60d;
+//            lat = lat + offset;
+//            lng = lng + offset;
+//            MyItem offsetItem = new MyItem(lat, lng);
+//            mClusterManager.addItem(offsetItem);
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        //Cluster
+        setUpClusterer();
+
         // By observing the liveData, adding a new Place in the provider should draw the new marker
         placeProvider.getPlaces().observe(this, new Observer<Vector<Place>>() {
             @Override
@@ -127,14 +131,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 drawMarkers(places);
             }
         });
-        // Move the camera to the campus
-
-        //Cluster
-        setUpClusterer();
 
         // Add a marker in La Doua and move the camera
         LatLng laDoua = new LatLng(45.78216,4.87262);
 
+        // Move the camera to the campus
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laDoua));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -200,11 +201,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void drawMarkers(Vector<Place> places) {
         if(places != null){
-            for(Marker m : markers){
-                m.remove();
-            }
+            mClusterManager.clearItems();
             for(Place p : places){
-                markers.add(mMap.addMarker(new MarkerOptions().position(p.getLocation()).title("Marqueur")));
+//                markers.add(mMap.addMarker(new MarkerOptions().position(p.getLocation()).title("Marqueur")));
+                mClusterManager.addItem(new MyItem(p.getLocation().latitude,p.getLocation().longitude));
             }
         }
     }
