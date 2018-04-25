@@ -3,8 +3,6 @@ package com.lugdunum.heptartuflette.lugdunum.Activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.BitmapDrawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,21 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.lugdunum.heptartuflette.lugdunum.R;
-
-import java.util.Collection;
+import com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomClusterRenderer;
+import com.lugdunum.heptartuflette.lugdunum.Utils.Map.ClusterItemPic;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -37,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
     private GoogleMap mMap;
     // Declare a variable for the cluster manager.
-    private ClusterManager<MyItem> mClusterManager;
+    private ClusterManager<ClusterItemPic> mClusterManager;
 
 
     private void setUpClusterer() {
@@ -52,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(mClusterManager);
 
         // Add cluster items (markers) to the cluster manager.
+        // TODO replace this by adding real pictures
         addItems();
     }
 
@@ -66,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             double offset = i / 60d;
             lat = lat + offset;
             lng = lng + offset;
-            MyItem offsetItem = new MyItem(lat, lng);
+            ClusterItemPic offsetItem = new ClusterItemPic(lat, lng);
             mClusterManager.addItem(offsetItem);
         }
     }
