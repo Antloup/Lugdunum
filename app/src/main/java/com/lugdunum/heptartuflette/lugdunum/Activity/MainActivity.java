@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 Snackbar.make(view, "TODO : Load activity to load a new image", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-//                addOldPhoto();
+//                Intent i = new Intent(
+//                        Intent.ACTION_PICK,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                addOldPhoto();
             }
         });
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(places != null){
             mClusterManager.clearItems();
             for(Place p : places){
-                mClusterManager.addItem(new MyItem(p.getLocation().latitude,p.getLocation().longitude));
+                mClusterManager.addItem(new ClusterItemPic(p.getLocation().latitude,p.getLocation().longitude));
             }
         }
     }
@@ -193,20 +193,4 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(myIntent);
     }
 
-//    private LatLng getUserPosition() {
-//
-//
-//        mFusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//                        // Got last known location. In some rare situations this can be null.
-//                        if (location != null) {
-//                            // Logic to handle location object
-//                        }
-//                    }
-//                });
-//
-//
-//    }
 }
