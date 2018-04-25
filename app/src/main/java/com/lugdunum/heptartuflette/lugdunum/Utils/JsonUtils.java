@@ -1,15 +1,16 @@
 package com.lugdunum.heptartuflette.lugdunum.Utils;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.Logger;
 
 public final class JsonUtils {
 
-    private static Logger LOGGER = Logger.getLogger("JSONUtils");
+    private static final String TAG ="JsonUtils";
 
     private JsonUtils() {
     }
@@ -50,7 +51,7 @@ public final class JsonUtils {
             }
             br.close();
         } catch (IOException e) {
-            LOGGER.severe("Problème d'accès à l'URL " + url.getPath());
+            Log.e(TAG,"Problème d'accès à l'URL " + url.getPath());
             throw new RuntimeException(e);
         }
         return builder.toString();
