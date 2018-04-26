@@ -55,7 +55,7 @@ public class ShowOldPhoto extends AppCompatActivity {
                 } else {
                     // permission denied
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage(R.string.permission_message).setTitle(R.string.permission_message_title);
+                    builder.setMessage(R.string.camera_permission_message).setTitle(R.string.permission_message_title);
                     builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
@@ -78,15 +78,9 @@ public class ShowOldPhoto extends AppCompatActivity {
             dispatchTakePictureIntent();
         } else {
             // No permission yet, asking through onRequestPermissionsResult
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        REQUEST_IMAGE_CAPTURE);
-
-            }
-
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    REQUEST_IMAGE_CAPTURE);
         }
     }
 
