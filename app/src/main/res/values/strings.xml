@@ -2,7 +2,7 @@
     <string name="app_name">Lugdunum</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">Lugdunum</string>
-    <string name="permission_message">Lugdunum a besoin de votre position pour vous suggérer des photos proches de vous.</string>
+    <string name="position_permission_message">Lugdunum a besoin de votre position pour vous suggérer des photos proches de vous.</string>
     <string name="permission_message_title">Hey !</string>
     <string name="ok">OK</string>
 
@@ -100,4 +100,5 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="old_pic_description">Votre photo ancienne</string>
+    <string name="storage_permission_message">Lugdunum a besoin d\'accéder à votre stockage pour que vous puissiez ajouter une photo.</string>
 </resources>

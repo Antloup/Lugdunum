@@ -5,21 +5,17 @@ import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.BitmapDrawable;
-import android.location.Location;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,11 +24,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
-import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.lugdunum.heptartuflette.lugdunum.R;
 import com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomClusterRenderer;
@@ -43,7 +36,8 @@ import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 41;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
     private static int RESULT_LOAD_IMAGE = 1;
 //    private FusedLocationProviderClient mFusedLocationClient;
     private GoogleMap mMap;
@@ -80,14 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "TODO : Load activity to load a new image", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-//                Intent i = new Intent(
-//                        Intent.ACTION_PICK,
-//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//
-//                startActivityForResult(i, RESULT_LOAD_IMAGE);
-                addOldPhoto();
+                openGallery();
             }
         });
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -96,6 +83,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         markers = new Vector<Marker>();
     }
 
+    private void openGallery(){
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            Intent i = new Intent(
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            startActivityForResult(i, RESULT_LOAD_IMAGE);
+        } else {
+            // request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -112,10 +116,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        // Add a marker in La Doua and move the camera
+        // We center the map on the campus for now
         LatLng laDoua = new LatLng(45.78216,4.87262);
 
-        // Move the camera to the campus
+        // Move the camera to the campus and set appropriate zoom
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laDoua));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -141,26 +146,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission granted !
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
                         mMap.setMyLocationEnabled(true);
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLng());
                     }
 
                 } else {
                     // permission denied
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage(R.string.permission_message).setTitle(R.string.permission_message_title);
+                    builder.setMessage(R.string.position_permission_message).setTitle(R.string.permission_message_title);
                     builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
@@ -173,7 +174,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 return;
             }
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted !
+                    openGallery();
+                } else {
+                    // permission denied
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage(R.string.storage_permission_message).setTitle(R.string.permission_message_title);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
 
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                return;
             // other 'case' lines to check for other
             // permissions this app might request.
         }
@@ -188,9 +208,33 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void addOldPhoto() {
+    private void addOldPhoto(String picturePath) {
         Intent myIntent = new Intent(this, AddOldPhoto.class);
+        myIntent.putExtra("picturePath",picturePath);
         startActivity(myIntent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            addOldPhoto(picturePath);
+
+//            BitmapFactory.decodeFile(picturePath);
+
+        }
+
+
+    }
 }
