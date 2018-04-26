@@ -23,7 +23,8 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<ClusterItemPic
 
     @Override protected void onBeforeClusterItemRendered(ClusterItemPic item,
                                                          MarkerOptions markerOptions) {
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pic_perso));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pic_perso))
+        ;
     }
 
     @Override

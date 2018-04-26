@@ -33,5 +33,4 @@ public class PlaceProvider {
     public LiveData<Vector<Place>> getPlaces() {
         return places;
     }
-
 }

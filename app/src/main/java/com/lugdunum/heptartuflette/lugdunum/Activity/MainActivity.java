@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +25,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.clustering.Cluster;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
 import com.google.maps.android.clustering.ClusterManager;
@@ -34,7 +38,7 @@ import com.lugdunum.heptartuflette.lugdunum.Utils.Map.ClusterItemPic;
 
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,ClusterManager.OnClusterItemClickListener {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 41;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // manager.
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterItemClickListener(this);
 
     }
 
@@ -214,6 +219,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(myIntent);
     }
 
+    @Override
+    public boolean onClusterItemClick(ClusterItem clusterItem) {
+        Intent myIntent = new Intent(this, ShowOldPhoto.class);
+        startActivity(myIntent);
+        return true;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
