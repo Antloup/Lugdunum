@@ -15,14 +15,33 @@
             android:id="@+id/oldImg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/common_google_signin_btn_text_dark"
+            android:src="@drawable/ic_launcher_background"
             android:contentDescription="@string/old_pic_description"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@string/large_text" />
+
+        <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".Activity.AddOldPhoto"
+            tools:showIn="@layout/activity_add_old_photo">
+            <com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomMapView
+                android:id="@+id/customMap"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                >
+                <include
+                    layout="@layout/fragment_map">
+                </include>
+            </com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomMapView>
+        </android.support.constraint.ConstraintLayout>
+
+
     </LinearLayout>
 
 
