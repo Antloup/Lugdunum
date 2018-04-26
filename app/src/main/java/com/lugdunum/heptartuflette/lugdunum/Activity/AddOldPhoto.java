@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -49,6 +50,13 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
                 mMap.addMarker(marker);
             }
         });
+
+        // We center the map on the campus for now
+        LatLng laDoua = new LatLng(45.78216,4.87262);
+
+        // Move the camera to the campus and set appropriate zoom
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(laDoua));
     }
 
 

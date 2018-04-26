@@ -11,13 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/oldImg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_background"
+            android:layout_height="300dp"
             android:contentDescription="@string/old_pic_description"
-            />
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingTop="8dp"
+            android:text="Localisation :" />
 
         <android.support.constraint.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,18 +37,34 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".Activity.AddOldPhoto"
             tools:showIn="@layout/activity_add_old_photo">
+
             <com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomMapView
                 android:id="@+id/customMap"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                >
-                <include
-                    layout="@layout/fragment_map">
-                </include>
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <include layout="@layout/fragment_map"></include>
             </com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomMapView>
+
         </android.support.constraint.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contribuer" />
 
 
     </LinearLayout>
