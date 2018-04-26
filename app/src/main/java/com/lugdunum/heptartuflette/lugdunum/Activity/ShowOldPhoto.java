@@ -101,10 +101,11 @@ public class ShowOldPhoto extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             //TODO : pass image in TakePhoto activity
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
             Intent myIntent = new Intent(this, TakePhoto.class);
             startActivity(myIntent);
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
 //            mImageView.setImageBitmap(imageBitmap);
         }
     }
