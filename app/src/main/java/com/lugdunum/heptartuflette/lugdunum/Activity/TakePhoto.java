@@ -1,10 +1,13 @@
 package com.lugdunum.heptartuflette.lugdunum.Activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lugdunum.heptartuflette.lugdunum.R;
@@ -37,6 +40,18 @@ public class TakePhoto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
+        ImageView iv = (ImageView)findViewById(R.id.imageViewCamera);
+
+        if(getIntent().hasExtra("imageByteArray")) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(
+                    getIntent().getByteArrayExtra("imageByteArray"),0,
+                    getIntent().getByteArrayExtra("imageByteArray").length
+            );
+            iv.setImageBitmap(bitmap);
+        }
+
+
+
     }
 
 }
