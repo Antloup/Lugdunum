@@ -9,10 +9,72 @@
     tools:showIn="@layout/activity_show_old_photo"
     >
 
-    <TextView
-        android:id="@+id/textView1"
+    <GridLayout
+        android:id="@+id/Grid1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="bottom"
-        android:text="Description" />
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:columnCount="2">
+
+        <TextView
+            android:id="@+id/TextDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="30 Juin 1945" />
+
+
+        <TextView
+            android:id="@+id/TextLieu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Bar Chez Lulu, 36 rue des Fleurs" />
+
+        <TextView
+            android:id="@+id/TextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Bar Chez Lulu, 36 rue des Fleurs vbbbbbbbbbbbbbbbbbb bbbbbbbbbbbbbbb bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+    </GridLayout>
+
 </android.support.v4.widget.NestedScrollView>
