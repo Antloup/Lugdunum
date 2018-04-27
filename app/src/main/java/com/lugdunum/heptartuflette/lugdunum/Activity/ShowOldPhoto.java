@@ -23,10 +23,16 @@ import java.io.ByteArrayOutputStream;
 
 public class ShowOldPhoto extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Get id of the picture
+        id = getIntent().getIntExtra("id",0);
+        // TODO : provider of OldPhoto
+
         setContentView(R.layout.activity_show_old_photo);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -28,4 +28,8 @@ public class Place {
     public Vector<RecentPhoto> getRecentPhotos() {
         return recentPhotos;
     }
+
+    public int getId() {
+        return id;
+    }
 }

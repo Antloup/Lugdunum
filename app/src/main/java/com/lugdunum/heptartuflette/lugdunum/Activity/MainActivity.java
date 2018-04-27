@@ -110,11 +110,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 == PackageManager.PERMISSION_GRANTED) {
             // permission granted !
-            Log.d("Permission","OK");
             placeProvider = new PlaceProvider();
             fillMap();
         } else {
-            Log.d("Permission","KO");
             // request the permission
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -246,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(places != null){
             mClusterManager.clearItems();
             for(Place p : places){
-                mClusterManager.addItem(new ClusterItemPic(p.getLocation().latitude,p.getLocation().longitude));
+                mClusterManager.addItem(new ClusterItemPic(p.getLocation().latitude,p.getLocation().longitude,p.getId()));
             }
         }
     }
@@ -259,10 +257,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onClusterItemClick(ClusterItem clusterItem) {
-        Intent myIntent = new Intent(this, ShowOldPhoto.class);
-        startActivity(myIntent);
-        return true;
+        if(clusterItem instanceof ClusterItemPic){
+            ClusterItemPic clusterItemPic = (ClusterItemPic) clusterItem;
+            Intent myIntent = new Intent(this, ShowOldPhoto.class);
+            myIntent.putExtra("id",clusterItemPic.getId());
+            startActivity(myIntent);
+            return true;
+        }
+
+        return false;
+
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
