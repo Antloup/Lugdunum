@@ -18,6 +18,8 @@ import android.view.View;
 
 import com.lugdunum.heptartuflette.lugdunum.R;
 
+import java.io.ByteArrayOutputStream;
+
 public class ShowOldPhoto extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -94,13 +96,16 @@ public class ShowOldPhoto extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            //TODO : pass image in TakePhoto activity
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-
             Intent myIntent = new Intent(this, TakePhoto.class);
+
+            //Converting bitmap to byteArray
+            ByteArrayOutputStream _bs = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, _bs);
+
+            myIntent.putExtra("imageByteArray", _bs.toByteArray());
             startActivity(myIntent);
-//            mImageView.setImageBitmap(imageBitmap);
         }
     }
 

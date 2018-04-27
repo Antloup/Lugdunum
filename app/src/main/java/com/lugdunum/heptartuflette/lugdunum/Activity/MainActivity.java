@@ -51,21 +51,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // Declare a variable for the cluster manager.
     private ClusterManager<ClusterItemPic> mClusterManager;
 
-
-    private void setUpClusterer() {
-        // Initialize the manager with the context and the map.
-        // (Activity extends context, so we can pass 'this' in the constructor.)
-        mClusterManager = new ClusterManager<>(this, mMap);
-        // Set the renderer
-        mClusterManager.setRenderer(new CustomClusterRenderer(this, mMap, mClusterManager));
-        // Point the map's listeners at the listeners implemented by the cluster
-        // manager.
-        mMap.setOnCameraIdleListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-        mClusterManager.setOnClusterItemClickListener(this);
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -105,6 +90,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
 
         }
+    }
+
+    private void setUpClusterer() {
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        mClusterManager = new ClusterManager<>(this, mMap);
+        // Set the renderer
+        mClusterManager.setRenderer(new CustomClusterRenderer(this, mMap, mClusterManager));
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterItemClickListener(this);
+
     }
 
     @Override
