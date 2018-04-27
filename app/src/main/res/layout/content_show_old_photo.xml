@@ -15,65 +15,77 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:columnCount="2"
         android:orientation="vertical"
-        android:visibility="visible"
-        android:columnCount="2">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/TextDate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnSpan="2"
             android:ems="10"
-            android:inputType="textPersonName"
             android:text="30 Juin 1945" />
 
 
         <TextView
             android:id="@+id/TextLieu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnSpan="2"
             android:ems="10"
-            android:inputType="textPersonName"
             android:text="Bar Chez Lulu, 36 rue des Fleurs" />
 
         <TextView
             android:id="@+id/TextDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnSpan="2"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Bar Chez Lulu, 36 rue des Fleurs vbbbbbbbbbbbbbbbbbb bbbbbbbbbbbbbbb bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" />
+            android:text="Bar Chez Lulu, 36 rue des Fleurs vbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbbbbbbb bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_row="3"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_row="3"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_row="4"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_row="4"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
     </GridLayout>
 
