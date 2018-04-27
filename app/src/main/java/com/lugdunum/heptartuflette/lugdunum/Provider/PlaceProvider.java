@@ -32,10 +32,10 @@ public class PlaceProvider {
     private void fetchPlaces() {
 
         // Connecting / get Json
-        GetJson();
+//        JsonToModel();
 
         // Mock provider for testing purposes
-//        MockPlaces();
+        MockPlaces();
 
     }
 
@@ -54,7 +54,7 @@ public class PlaceProvider {
         this.places.setValue(vec);
     }
 
-    public void GetJson(){
+    public void JsonToModel(){
         Vector<Place> vec = places.getValue();
         try {
             JSONArray json = new JsonUtils()

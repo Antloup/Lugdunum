@@ -4,26 +4,27 @@ import java.io.File;
 import java.util.Date;
 
 public class OldPhoto extends Photo {
-    private Date date;
-    private float score;
-    private int voteNumber;
 
-    public OldPhoto(int id, String name, format photoFormat, File image, Date date, float score, int voteNumber) {
+    private String date;
+    private String description;
+    private String infoLink;
+
+    public OldPhoto(int id, String name, format photoFormat, File image, String date, String description, String infoLink) {
         super(id, name, photoFormat, image);
         this.date = date;
-        this.score = score;
-        this.voteNumber = voteNumber;
+        this.description = description;
+        this.infoLink = infoLink;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public float getScore() {
-        return score;
+    public String getDescription() {
+        return description;
     }
 
-    public int getVoteNumber() {
-        return voteNumber;
+    public String getInfoLink() {
+        return infoLink;
     }
 }
