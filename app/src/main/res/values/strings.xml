@@ -107,4 +107,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="camera_permission_message">Lugdunum a besoin d\'accéder à votre appareil photo pour que vous puissiez prendre une photo.</string>
+    <string name="location">Localisation :</string>
 </resources>

@@ -6,5 +6,6 @@
     <string name="old_pic_description">Your old picture</string>
     <string name="storage_permission_message">Lugdunum needs access to your storage for you to upload a picture.</string>
     <string name="camera_permission_message">Lugdunum needs access to your camera for you to take a picture.</string>
+    <string name="location">Location :</string>
 
 </resources>

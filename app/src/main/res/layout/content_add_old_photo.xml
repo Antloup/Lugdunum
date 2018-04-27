@@ -15,10 +15,10 @@
         <ImageView
             android:id="@+id/oldImg"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
             android:contentDescription="@string/old_pic_description"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:src="@drawable/ic_launcher_background" />
+            android:paddingTop="0dp" />
 
         <TextView
             android:id="@+id/textView"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|center_horizontal"
             android:paddingTop="8dp"
-            android:text="Localisation :" />
+            android:text="@string/location" />
 
         <android.support.constraint.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"

@@ -25,6 +25,6 @@
 
     <include
         layout="@layout/content_add_old_photo"
-        android:layout_height="match_parent" />
+        />
 
 </android.support.design.widget.CoordinatorLayout>
