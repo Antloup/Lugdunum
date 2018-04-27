@@ -7,5 +7,8 @@
     <string name="storage_permission_message">Lugdunum needs access to your storage for you to upload a picture.</string>
     <string name="camera_permission_message">Lugdunum needs access to your camera for you to take a picture.</string>
     <string name="location">Location :</string>
+    <string name="add_old_photo_description">Describe your picture</string>
+    <string name="contribute">contribute</string>
+    <string name="oldPicDate">Date de la photo (approx.)</string>
 
 </resources>

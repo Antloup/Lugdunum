@@ -42,29 +42,37 @@
                 android:id="@+id/customMap"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="8dp"
+                android:layout_margin="@dimen/default_gap"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <include layout="@layout/fragment_map"></include>
+                <include layout="@layout/fragment_map" />
             </com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomMapView>
 
         </android.support.constraint.ConstraintLayout>
-
+        <EditText
+            android:id="@+id/dateInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/oldPicDate"
+            android:inputType="text" />
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="@string/add_old_photo_description"
             android:inputType="textMultiLine" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contribuer" />
+            android:textAllCaps="true"
+            android:text="@string/contribute" />
 
 
     </LinearLayout>
