@@ -102,13 +102,13 @@
     <string name="old_pic_description">Votre photo ancienne</string>
     <string name="storage_permission_message">Lugdunum a besoin d\'accéder à votre stockage pour que vous puissiez ajouter une photo.</string>
     <string name="title_activity_show_old_photo">Titre photo</string>
-    <string name="title_activity_take_photo">TakePhoto</string>
+    <string name="title_activity_take_photo">Comparer des</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="camera_permission_message">Lugdunum a besoin d\'accéder à votre appareil photo pour que vous puissiez prendre une photo.</string>
     <string name="location">Localisation :</string>
     <string name="add_old_photo_description">Description de votre photo</string>
-    <string name="contribute">contribuer</string>
+    <string name="contribute">Contribuer</string>
     <string name="oldPicDate">Date de la photo (approx.)</string>
 </resources>
