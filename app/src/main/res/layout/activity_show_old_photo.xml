@@ -39,8 +39,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/content_show_old_photo"
-        android:layout_height="536dp" />
+        layout="@layout/content_show_old_photo"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
