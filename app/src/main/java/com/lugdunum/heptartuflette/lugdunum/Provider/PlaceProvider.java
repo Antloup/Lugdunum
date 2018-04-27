@@ -9,6 +9,7 @@ import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Utils.JsonUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,13 +33,19 @@ public class PlaceProvider {
         Vector<Place> vec = places.getValue();
         try {
             try {
-                JSONObject json = new JsonUtils()
+                JSONArray json = new JsonUtils()
                         .execute(new URL(JsonUtils.protocol,JsonUtils.host,resquest))
                         .get();
-                double lat = json.getDouble("latitude");
-                double lng = json.getDouble("longitude");
-                Place place = new Place(1,new LatLng(lat,lng), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-                vec.add(place);
+                for (int i = 0 ; i < json.length(); i++) {
+                    JSONObject obj = json.getJSONObject(i);
+                    double lat = obj.getDouble("latitude");
+                    double lng = obj.getDouble("longitude");
+                    Place place = new Place(1,new LatLng(lat,lng), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+                    vec.add(place);
+                }
+
+
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

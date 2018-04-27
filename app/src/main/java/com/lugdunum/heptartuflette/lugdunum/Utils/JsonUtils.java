@@ -3,6 +3,7 @@ package com.lugdunum.heptartuflette.lugdunum.Utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,12 +17,12 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 
-public class JsonUtils extends AsyncTask<URL, Integer, JSONObject> {
+public class JsonUtils extends AsyncTask<URL, Integer, JSONArray> {
 
     public static String host = "398691f7.ngrok.io";
     public static String protocol = "http";
 
-    protected JSONObject doInBackground(URL... urls) {
+    protected JSONArray doInBackground(URL... urls) {
         int count = urls.length;
         long totalSize = 0;
         HttpURLConnection urlConnection = null;
@@ -39,12 +40,9 @@ public class JsonUtils extends AsyncTask<URL, Integer, JSONObject> {
                     s += inputLine;
                 }
 
-                //Remove [] at beginning / end
-                s = s.substring(1,s.length()-1);
-
                 //Converting to json
                 try {
-                    JSONObject json = new JSONObject(s);
+                    JSONArray json = new JSONArray(s);
                     return json;
                 } catch (JSONException e) {
                     e.printStackTrace();
