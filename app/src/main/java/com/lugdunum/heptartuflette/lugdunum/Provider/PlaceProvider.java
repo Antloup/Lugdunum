@@ -34,7 +34,7 @@ public class PlaceProvider {
         try {
             try {
                 JSONArray json = new JsonUtils()
-                        .execute(new URL(JsonUtils.protocol,JsonUtils.host,resquest))
+                        .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,resquest))
                         .get();
                 for (int i = 0 ; i < json.length(); i++) {
                     JSONObject obj = json.getJSONObject(i);
@@ -58,9 +58,9 @@ public class PlaceProvider {
 //        Place place1 = new Place(1,new LatLng(45.78218,4.86912), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
 //        Place place2 = new Place(2,new LatLng(45.78389,4.87412), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
 //        Place place3 = new Place(3,new LatLng(45.78538,4.88642), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-//        this.places.getValue().add(place1);
-//        this.places.getValue().add(place2);
-//        this.places.getValue().add(place3);
+//        vec.add(place1);
+//        vec.add(place2);
+//        vec.add(place3);
         this.places.setValue(vec);
     }
 

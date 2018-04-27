@@ -19,8 +19,9 @@ import java.net.UnknownHostException;
 
 public class JsonUtils extends AsyncTask<URL, Integer, JSONArray> {
 
-    public static String host = "398691f7.ngrok.io";
+    public static String host = "51.254.118.174";
     public static String protocol = "http";
+    public static int port = 8080;
 
     protected JSONArray doInBackground(URL... urls) {
         int count = urls.length;
