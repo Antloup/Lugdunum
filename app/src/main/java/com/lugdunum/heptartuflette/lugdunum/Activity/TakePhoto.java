@@ -48,6 +48,8 @@ public class TakePhoto extends AppCompatActivity {
                     getIntent().getByteArrayExtra("imageByteArray").length
             );
             iv.setImageBitmap(bitmap);
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
 

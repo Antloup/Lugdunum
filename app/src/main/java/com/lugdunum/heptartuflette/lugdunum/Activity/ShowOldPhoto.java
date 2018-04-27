@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.lugdunum.heptartuflette.lugdunum.R;
 
@@ -37,6 +38,22 @@ public class ShowOldPhoto extends AppCompatActivity {
                 takePhoto();
             }
         });
+
+        ImageView image = (ImageView)findViewById(R.id.imageView);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compareOldPhoto();
+            }
+        });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void compareOldPhoto(){
+        Intent myIntent = new Intent(this, CompareOldPhoto.class);
+//        myIntent.putExtra("picturePath",picturePath);
+        startActivity(myIntent);
     }
 
 

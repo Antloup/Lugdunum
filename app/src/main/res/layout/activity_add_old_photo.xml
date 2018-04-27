@@ -24,7 +24,6 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/content_add_old_photo"
-        android:layout_height="match_parent" />
+        layout="@layout/content_add_old_photo" />
 
 </android.support.design.widget.CoordinatorLayout>
