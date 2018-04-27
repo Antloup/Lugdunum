@@ -40,11 +40,9 @@ public class PlaceProvider {
                     JSONObject obj = json.getJSONObject(i);
                     double lat = obj.getDouble("latitude");
                     double lng = obj.getDouble("longitude");
-                    Place place = new Place(1,new LatLng(lat,lng), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+                    Place place = new Place(i,new LatLng(lat,lng), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
                     vec.add(place);
                 }
-
-
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
