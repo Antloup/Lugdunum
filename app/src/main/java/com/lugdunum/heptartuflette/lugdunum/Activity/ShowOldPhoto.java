@@ -17,16 +17,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.lugdunum.heptartuflette.lugdunum.Provider.OldPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
 import java.io.ByteArrayOutputStream;
 
 public class ShowOldPhoto extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private int id;
+    private OldPhotoProvider oldPhotoProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Get id of the picture
+        id = getIntent().getIntExtra("id",0);
+        oldPhotoProvider = new OldPhotoProvider(id);
+
         setContentView(R.layout.activity_show_old_photo);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

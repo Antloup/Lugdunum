@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 public class PlaceProvider {
 
-    private String resquest = "/places";
+    private String request = "/places";
     private MutableLiveData<Vector<Place>> places;
 
     public PlaceProvider() {
@@ -30,28 +30,53 @@ public class PlaceProvider {
     }
 
     private void fetchPlaces() {
+
+        // Connecting / get Json
+//        JsonToModel();
+
+        // Mock provider for testing purposes
+        MockPlaces();
+
+    }
+
+    public LiveData<Vector<Place>> getPlaces() {
+        return places;
+    }
+
+    public void MockPlaces(){
+        Vector<Place> vec = places.getValue();
+        Place place1 = new Place(1,new LatLng(45.78218,4.86912), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+        Place place2 = new Place(2,new LatLng(45.78389,4.87412), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+        Place place3 = new Place(3,new LatLng(45.78538,4.88642), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+        this.places.getValue().add(place1);
+        this.places.getValue().add(place2);
+        this.places.getValue().add(place3);
+        this.places.setValue(vec);
+    }
+
+    public void JsonToModel(){
         Vector<Place> vec = places.getValue();
         try {
             try {
                 JSONArray json = new JsonUtils()
-                        .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,resquest))
+                        .execute(new URL(JsonUtils.protocol, JsonUtils.host, JsonUtils.port, request))
                         .get();
-                for (int i = 0 ; i < json.length(); i++) {
+                for (int i = 0; i < json.length(); i++) {
                     JSONObject obj = json.getJSONObject(i);
                     double lat = obj.getDouble("latitude");
                     double lng = obj.getDouble("longitude");
-                    Place place = new Place(i,new LatLng(lat,lng), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+                    Place place = new Place(i, new LatLng(lat, lng), new Vector<OldPhoto>(), new Vector<RecentPhoto>());
                     vec.add(place);
                 }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        } catch (MalformedURLException e) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        catch (MalformedURLException e) {
             e.printStackTrace();
         }
         // Mock provider for testing purposes
@@ -64,7 +89,5 @@ public class PlaceProvider {
         this.places.setValue(vec);
     }
 
-    public LiveData<Vector<Place>> getPlaces() {
-        return places;
-    }
+
 }

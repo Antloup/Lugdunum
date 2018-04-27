@@ -1,28 +1,29 @@
 package com.lugdunum.heptartuflette.lugdunum.Model;
 
 import java.io.File;
+import java.util.Date;
 
 public class RecentPhoto extends Photo {
-    private String date;
-    private String description;
-    private String infoLink;
+    private Date date;
+    private float score;
+    private int voteNumber;
 
-    public RecentPhoto(int id, String name, format photoFormat, File image, String date, String description, String infoLink) {
+    public RecentPhoto(int id, String name, format photoFormat, File image, Date date, float score, int voteNumber) {
         super(id, name, photoFormat, image);
         this.date = date;
-        this.description = description;
-        this.infoLink = infoLink;
+        this.score = score;
+        this.voteNumber = voteNumber;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public String getDescription() {
-        return description;
+    public float getScore() {
+        return score;
     }
 
-    public String getInfoLink() {
-        return infoLink;
+    public int getVoteNumber() {
+        return voteNumber;
     }
 }
