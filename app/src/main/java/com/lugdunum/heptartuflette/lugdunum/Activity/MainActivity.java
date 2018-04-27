@@ -16,8 +16,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,9 +25,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
@@ -41,6 +38,7 @@ import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,ClusterManager.OnClusterItemClickListener {
 
+    private static final int MY_PERMISSIONS_REQUEST_INTERNET = 40;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 41;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -59,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        placeProvider = new PlaceProvider();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         markers = new Vector<Marker>();
+
     }
 
     private void openGallery(){
@@ -110,16 +107,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //Cluster
-        setUpClusterer();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+                == PackageManager.PERMISSION_GRANTED) {
+            // permission granted !
+            Log.d("Permission","OK");
+            placeProvider = new PlaceProvider();
+            fillMap();
+        } else {
+            Log.d("Permission","KO");
+            // request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_INTERNET);
 
-        // By observing the liveData, adding a new Place in the provider should draw the new marker
-        placeProvider.getPlaces().observe(this, new Observer<Vector<Place>>() {
-            @Override
-            public void onChanged(@Nullable Vector<Place> places) {
-                drawMarkers(places);
-            }
-        });
+        }
 
         // We center the map on the campus for now
         LatLng laDoua = new LatLng(45.78216,4.87262);
@@ -149,6 +150,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         }
+
+    }
+
+    public void fillMap(){
+
+        //Cluster
+        setUpClusterer();
+
+        // By observing the liveData, adding a new Place in the provider should draw the new marker
+        placeProvider.getPlaces().observe(this, new Observer<Vector<Place>>() {
+            @Override
+            public void onChanged(@Nullable Vector<Place> places) {
+                drawMarkers(places);
+            }
+        });
+
     }
 
     @Override
@@ -184,6 +201,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission granted !
                     openGallery();
+                } else {
+                    // permission denied
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage(R.string.storage_permission_message).setTitle(R.string.permission_message_title);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                return;
+
+            case MY_PERMISSIONS_REQUEST_INTERNET:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted !
+                    placeProvider = new PlaceProvider();
+                    fillMap();
                 } else {
                     // permission denied
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
