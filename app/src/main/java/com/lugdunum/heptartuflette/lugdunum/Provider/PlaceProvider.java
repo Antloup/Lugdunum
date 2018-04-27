@@ -30,32 +30,21 @@ public class PlaceProvider {
     }
 
     private void fetchPlaces() {
-        Vector<Place> vec = places.getValue();
-//        try {
-//            try {
-//                JSONArray json = new JsonUtils()
-//                        .execute(new URL(JsonUtils.protocol,JsonUtils.host,request))
-//                        .get();
-//                for (int i = 0 ; i < json.length(); i++) {
-//                    JSONObject obj = json.getJSONObject(i);
-//                    double lat = obj.getDouble("latitude");
-//                    double lng = obj.getDouble("longitude");
-//                    int id = obj.getInt("id");
-//                    Place place = new Place(id,new LatLng(lat,lng), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-//                    vec.add(place);
-//                }
-//
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
+
+        // Connecting / get Json
+        GetJson();
+
         // Mock provider for testing purposes
+//        MockPlaces();
+
+    }
+
+    public LiveData<Vector<Place>> getPlaces() {
+        return places;
+    }
+
+    public void MockPlaces(){
+        Vector<Place> vec = places.getValue();
         Place place1 = new Place(1,new LatLng(45.78218,4.86912), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
         Place place2 = new Place(2,new LatLng(45.78389,4.87412), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
         Place place3 = new Place(3,new LatLng(45.78538,4.88642), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
@@ -65,7 +54,30 @@ public class PlaceProvider {
         this.places.setValue(vec);
     }
 
-    public LiveData<Vector<Place>> getPlaces() {
-        return places;
+    public void GetJson(){
+        Vector<Place> vec = places.getValue();
+        try {
+            JSONArray json = new JsonUtils()
+                    .execute(new URL(JsonUtils.protocol,JsonUtils.host,request))
+                    .get();
+            for (int i = 0 ; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                double lat = obj.getDouble("latitude");
+                double lng = obj.getDouble("longitude");
+                int id = obj.getInt("id");
+                Place place = new Place(id,new LatLng(lat,lng), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+                vec.add(place);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 }
