@@ -21,7 +21,10 @@ public class AddOldPhoto extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ImageView img = (ImageView) findViewById(R.id.oldImg);
-        img.setImageBitmap(BitmapFactory.decodeFile(getIntent().getStringExtra("picturePath")));
+        BitmapFactory.Options op = new BitmapFactory.Options();
+        op.inSampleSize = 2;
+//        op.inScaled = true;
+        img.setImageBitmap(BitmapFactory.decodeFile(getIntent().getStringExtra("picturePath"), op));
         // TODO: pop the current activity and don't reload main activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
