@@ -35,7 +35,7 @@ public class PlaceProvider {
         JsonToModel();
 
         // Mock provider for testing purposes
-//        MockPlaces();
+//        MockData();
 
     }
 
@@ -43,7 +43,7 @@ public class PlaceProvider {
         return places;
     }
 
-    public void MockPlaces(){
+    public void MockData(){
         Vector<Place> vec = places.getValue();
         Place place1 = new Place(1,new LatLng(45.78218,4.86912), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
         Place place2 = new Place(2,new LatLng(45.78389,4.87412), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
