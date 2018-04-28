@@ -1,5 +1,7 @@
 package com.lugdunum.heptartuflette.lugdunum.Model;
 
+import android.graphics.Bitmap;
+
 import java.io.File;
 
 public class Photo {
@@ -7,10 +9,10 @@ public class Photo {
 
     private int id;
     private String name;
-    private format photoFormat;
-    private File image;
+    private String photoFormat;
+    private Bitmap image;
 
-    public Photo(int id, String name, format photoFormat, File image) {
+    public Photo(int id, String name, String photoFormat, Bitmap image) {
         this.id = id;
         this.name = name;
         this.photoFormat = photoFormat;
@@ -21,11 +23,11 @@ public class Photo {
         return name;
     }
 
-    public format getPhotoFormat() {
+    public String getPhotoFormat() {
         return photoFormat;
     }
 
-    public File getImage() {
+    public Bitmap getImage() {
         return image;
     }
 }

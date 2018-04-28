@@ -32,10 +32,10 @@ public class PlaceProvider {
     private void fetchPlaces() {
 
         // Connecting / get Json
-//        JsonToModel();
+        JsonToModel();
 
         // Mock provider for testing purposes
-        MockPlaces();
+//        MockPlaces();
 
     }
 
@@ -57,17 +57,15 @@ public class PlaceProvider {
     public void JsonToModel(){
         Vector<Place> vec = places.getValue();
         try {
-            try {
-                JSONArray json = new JsonUtils()
-                        .execute(new URL(JsonUtils.protocol, JsonUtils.host, JsonUtils.port, request))
-                        .get();
-                for (int i = 0; i < json.length(); i++) {
-                    JSONObject obj = json.getJSONObject(i);
-                    double lat = obj.getDouble("latitude");
-                    double lng = obj.getDouble("longitude");
-                    Place place = new Place(i, new LatLng(lat, lng), new Vector<OldPhoto>(), new Vector<RecentPhoto>());
-                    vec.add(place);
-                }
+            JSONArray json = new JsonUtils()
+                    .execute(new URL(JsonUtils.protocol, JsonUtils.host, JsonUtils.port, request))
+                    .get();
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                double lat = obj.getDouble("latitude");
+                double lng = obj.getDouble("longitude");
+                Place place = new Place(i, new LatLng(lat, lng), new Vector<OldPhoto>(), new Vector<RecentPhoto>());
+                vec.add(place);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -79,13 +77,7 @@ public class PlaceProvider {
         catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        // Mock provider for testing purposes
-//        Place place1 = new Place(1,new LatLng(45.78218,4.86912), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-//        Place place2 = new Place(2,new LatLng(45.78389,4.87412), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-//        Place place3 = new Place(3,new LatLng(45.78538,4.88642), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-//        vec.add(place1);
-//        vec.add(place2);
-//        vec.add(place3);
+
         this.places.setValue(vec);
     }
 
