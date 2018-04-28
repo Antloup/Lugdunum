@@ -1,14 +1,16 @@
 package com.lugdunum.heptartuflette.lugdunum.Model;
 
+import android.graphics.Bitmap;
+
 import java.io.File;
 import java.util.Date;
 
 public class RecentPhoto extends Photo {
     private Date date;
-    private float score;
+    private double score;
     private int voteNumber;
 
-    public RecentPhoto(int id, String name, format photoFormat, File image, Date date, float score, int voteNumber) {
+    public RecentPhoto(int id, String name, String photoFormat, Bitmap image, Date date, double score, int voteNumber) {
         super(id, name, photoFormat, image);
         this.date = date;
         this.score = score;
@@ -19,7 +21,7 @@ public class RecentPhoto extends Photo {
         return date;
     }
 
-    public float getScore() {
+    public double getScore() {
         return score;
     }
 
