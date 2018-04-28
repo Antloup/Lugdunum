@@ -30,6 +30,9 @@ public class RecentPhotoProvider {
     public RecentPhotoProvider(int id) {
         request += id;
 
+        this.recentPhotos = new MutableLiveData<Vector<RecentPhoto>>() {};
+        this.recentPhotos.setValue(new Vector<RecentPhoto>());
+
         // Connecting / get Json
 //        JsonToModel();
 

@@ -28,6 +28,9 @@ public class OldPhotoProvider {
     public OldPhotoProvider(int id) {
         request += id;
 
+        this.oldPhotos = new MutableLiveData<Vector<OldPhoto>>() {};
+        this.oldPhotos.setValue(new Vector<OldPhoto>());
+
         // Connecting / get Json
 //        JsonToModel();
 
@@ -87,5 +90,9 @@ public class OldPhotoProvider {
                 "http://www.google.com");
         this.oldPhotos.getValue().add(photo);
         this.oldPhotos.setValue(vec);
+    }
+
+    public Vector<OldPhoto> getOldPhotos() {
+        return oldPhotos.getValue();
     }
 }
