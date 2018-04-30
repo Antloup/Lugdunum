@@ -21,11 +21,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
@@ -92,25 +94,25 @@ public class ShowOldPhoto extends AppCompatActivity {
 
         int total = recentPhotoProvider.getRecentPhoto().size();
         int column = 2;
-        int row = (total / column)+1;
+        int row = ((total / column)+1)*2;
         layout.setColumnCount(column);
         layout.setRowCount(row);
         for (int i = 0, c = 0, r = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
-            if (c == column) {
-                c = 0;
-                r++;
-            }
+//            if (c == column) {
+//                c = 0;
+//                r+=2;
+//            }
             ImageView image = new ImageView(this);
             image.setImageBitmap(recentPhoto.getImage());
             image.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
 
             GridLayout.Spec rowSpan = GridLayout.spec(GridLayout.UNDEFINED, 1);
             GridLayout.Spec colSpan = GridLayout.spec(GridLayout.UNDEFINED, 1);
-            if (r == 0 && c == 0) {
-                colSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
-                rowSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
-            }
+//            if (r == 0 && c == 0) {
+//                colSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
+//                rowSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
+//            }
             GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
                     rowSpan, colSpan
             );
@@ -123,26 +125,14 @@ public class ShowOldPhoto extends AppCompatActivity {
                 }
             });
 
-        }
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colSpan
+            );
+            RatingBar ratingBar = new RatingBar(this, null, R.attr.ratingBarStyleSmall);
+            ratingBar.setRating((float) recentPhoto.getScore());
+            layout.addView(ratingBar,gridParam);
 
-//        for(final RecentPhoto recentPhoto : recentPhotoProvider.getRecentPhoto()){
-//            ImageView image = new ImageView(this);
-//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.WRAP_CONTENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//            );
-//            image.setLayoutParams(params);
-//            image.setImageBitmap(recentPhoto.getImage());
-//            // Adds the view to the layout
-//            layout.addView(image);
-//
-//            image.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    compareOldPhoto(recentPhoto.getImage());
-//                }
-//            });
-//        }
+        }
 
     }
 

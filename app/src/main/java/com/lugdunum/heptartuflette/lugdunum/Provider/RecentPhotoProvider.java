@@ -95,7 +95,7 @@ public class RecentPhotoProvider {
                 "png",
                 decodedByte,
                 date,
-                4.5,
+                2.5,
                 8);
         RecentPhoto photo2 = new RecentPhoto(2,
                 "Photo's Name",
@@ -109,7 +109,7 @@ public class RecentPhotoProvider {
                 "png",
                 decodedByte,
                 date,
-                4.5,
+                1.5,
                 8);
         this.recentPhotos.getValue().add(photo1);
         this.recentPhotos.getValue().add(photo2);
