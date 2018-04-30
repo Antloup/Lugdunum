@@ -1,6 +1,7 @@
 package com.lugdunum.heptartuflette.lugdunum.Activity;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,9 +22,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Provider.OldPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
@@ -39,6 +44,7 @@ public class ShowOldPhoto extends AppCompatActivity {
     private PlaceProvider placeProvider;
     private Bitmap oldPhotoBitmap;
     private Bitmap recentPhotoBitmap;
+    RecentPhoto recentPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +65,6 @@ public class ShowOldPhoto extends AppCompatActivity {
             }
         });
 
-        ImageView image = (ImageView)findViewById(R.id.imageView);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compareOldPhoto();
-            }
-        });
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Create provider / fill content
@@ -80,11 +78,6 @@ public class ShowOldPhoto extends AppCompatActivity {
         Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
 
-        //Set RecentPhoto Picture
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        recentPhotoBitmap = recentPhotoProvider.getRecentPhoto().firstElement().getImage();
-        imageView.setImageBitmap(recentPhotoBitmap);
-
         //Set text
         TextView textView = (TextView) findViewById(R.id.TextDate);
         textView.setText(oldPhotoProvider.getOldPhotos().firstElement().getDate());
@@ -92,11 +85,71 @@ public class ShowOldPhoto extends AppCompatActivity {
         textView.setText(oldPhotoProvider.getOldPhotos().firstElement().getDescription());
         textView = (TextView) findViewById(R.id.TextLieu);
         textView.setText(placeProvider.getPlaces().getValue().get(0).getDescription());
+
+        //Set RecentPhoto Picture
+        GridLayout layout = (GridLayout)findViewById(R.id.Grid1);
+        layout.removeAllViews();
+
+        int total = recentPhotoProvider.getRecentPhoto().size();
+        int column = 2;
+        int row = (total / column)+1;
+        layout.setColumnCount(column);
+        layout.setRowCount(row);
+        for (int i = 0, c = 0, r = 0; i < total; i++, c++) {
+            recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
+            if (c == column) {
+                c = 0;
+                r++;
+            }
+            ImageView image = new ImageView(this);
+            image.setImageBitmap(recentPhoto.getImage());
+            image.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+
+            GridLayout.Spec rowSpan = GridLayout.spec(GridLayout.UNDEFINED, 1);
+            GridLayout.Spec colSpan = GridLayout.spec(GridLayout.UNDEFINED, 1);
+            if (r == 0 && c == 0) {
+                colSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
+                rowSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
+            }
+            GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colSpan
+            );
+            layout.addView(image,gridParam);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    compareOldPhoto(recentPhoto.getImage());
+                }
+            });
+
+        }
+
+//        for(final RecentPhoto recentPhoto : recentPhotoProvider.getRecentPhoto()){
+//            ImageView image = new ImageView(this);
+//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.WRAP_CONTENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT
+//            );
+//            image.setLayoutParams(params);
+//            image.setImageBitmap(recentPhoto.getImage());
+//            // Adds the view to the layout
+//            layout.addView(image);
+//
+//            image.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    compareOldPhoto(recentPhoto.getImage());
+//                }
+//            });
+//        }
+
     }
 
-    private void compareOldPhoto(){
+    private void compareOldPhoto(Bitmap recentPhoto){
         Intent myIntent = new Intent(this, CompareOldPhoto.class);
         myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
+        myIntent.putExtra("recentPhotoBitmap",recentPhoto);
         startActivity(myIntent);
     }
 

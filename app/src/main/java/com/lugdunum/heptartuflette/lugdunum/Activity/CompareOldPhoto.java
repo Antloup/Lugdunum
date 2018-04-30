@@ -12,6 +12,7 @@ import com.lugdunum.heptartuflette.lugdunum.R;
 public class CompareOldPhoto extends AppCompatActivity {
 
     private Bitmap oldPhotoBitmap;
+    private Bitmap recentPhotoBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,5 +26,8 @@ public class CompareOldPhoto extends AppCompatActivity {
         oldPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("oldPhotoBitmap");
         ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
         oldImageView.setImageBitmap(oldPhotoBitmap);
+        recentPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("recentPhotoBitmap");
+        ImageView recentImageView = (ImageView) findViewById(R.id.imageViewRecent);
+        recentImageView.setImageBitmap(recentPhotoBitmap);
     }
 }

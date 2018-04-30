@@ -90,14 +90,30 @@ public class RecentPhotoProvider {
         byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         Date date = new Date();
-        RecentPhoto photo = new RecentPhoto(1,
+        RecentPhoto photo1 = new RecentPhoto(1,
                 "Photo's Name",
                 "png",
                 decodedByte,
                 date,
                 4.5,
                 8);
-        this.recentPhotos.getValue().add(photo);
+        RecentPhoto photo2 = new RecentPhoto(2,
+                "Photo's Name",
+                "png",
+                decodedByte,
+                date,
+                4.5,
+                8);
+        RecentPhoto photo3 = new RecentPhoto(3,
+                "Photo's Name",
+                "png",
+                decodedByte,
+                date,
+                4.5,
+                8);
+        this.recentPhotos.getValue().add(photo1);
+        this.recentPhotos.getValue().add(photo2);
+        this.recentPhotos.getValue().add(photo3);
         this.recentPhotos.setValue(vec);
     }
 
