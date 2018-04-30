@@ -37,6 +37,7 @@ public class ShowOldPhoto extends AppCompatActivity {
     private OldPhotoProvider oldPhotoProvider;
     private RecentPhotoProvider recentPhotoProvider;
     private PlaceProvider placeProvider;
+    private Bitmap oldPhotoBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +75,8 @@ public class ShowOldPhoto extends AppCompatActivity {
 
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-        Bitmap bitmap = oldPhotoProvider.getOldPhotos().firstElement().getImage();
-        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+        oldPhotoBitmap = oldPhotoProvider.getOldPhotos().firstElement().getImage();
+        Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
 
 
@@ -90,7 +91,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
     private void compareOldPhoto(){
         Intent myIntent = new Intent(this, CompareOldPhoto.class);
-//        myIntent.putExtra("picturePath",picturePath);
+        myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
         startActivity(myIntent);
     }
 
