@@ -38,6 +38,7 @@ public class ShowOldPhoto extends AppCompatActivity {
     private RecentPhotoProvider recentPhotoProvider;
     private PlaceProvider placeProvider;
     private Bitmap oldPhotoBitmap;
+    private Bitmap recentPhotoBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,10 @@ public class ShowOldPhoto extends AppCompatActivity {
         Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
 
+        //Set RecentPhoto Picture
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        recentPhotoBitmap = recentPhotoProvider.getRecentPhoto().firstElement().getImage();
+        imageView.setImageBitmap(recentPhotoBitmap);
 
         //Set text
         TextView textView = (TextView) findViewById(R.id.TextDate);
