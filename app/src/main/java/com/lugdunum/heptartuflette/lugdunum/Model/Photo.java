@@ -30,4 +30,8 @@ public class Photo {
     public Bitmap getImage() {
         return image;
     }
+
+    public int getId() {
+        return id;
+    }
 }

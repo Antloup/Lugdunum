@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 public class RecentPhotoProvider {
     //TODO : set the good request
-    private String request = "/recentPhotos/";
+    private String request = "/photoList/";
     private MutableLiveData<Vector<RecentPhoto>> recentPhotos;
 
     public RecentPhotoProvider(int id) {
@@ -95,16 +95,44 @@ public class RecentPhotoProvider {
                 "png",
                 decodedByte,
                 date,
-                2.5,
+                2.8,
                 8);
         RecentPhoto photo2 = new RecentPhoto(2,
                 "Photo's Name",
                 "png",
                 decodedByte,
                 date,
-                4.5,
+                4.2,
                 8);
         RecentPhoto photo3 = new RecentPhoto(3,
+                "Photo's Name",
+                "png",
+                decodedByte,
+                date,
+                1.5,
+                8);
+        RecentPhoto photo4 = new RecentPhoto(4,
+                "Photo's Name",
+                "png",
+                decodedByte,
+                date,
+                1.5,
+                8);
+        RecentPhoto photo5 = new RecentPhoto(5,
+                "Photo's Name",
+                "png",
+                decodedByte,
+                date,
+                1.5,
+                8);
+        RecentPhoto photo6 = new RecentPhoto(6,
+                "Photo's Name",
+                "png",
+                decodedByte,
+                date,
+                1.5,
+                8);
+        RecentPhoto photo7 = new RecentPhoto(7,
                 "Photo's Name",
                 "png",
                 decodedByte,
@@ -114,6 +142,10 @@ public class RecentPhotoProvider {
         this.recentPhotos.getValue().add(photo1);
         this.recentPhotos.getValue().add(photo2);
         this.recentPhotos.getValue().add(photo3);
+        this.recentPhotos.getValue().add(photo4);
+        this.recentPhotos.getValue().add(photo5);
+        this.recentPhotos.getValue().add(photo6);
+        this.recentPhotos.getValue().add(photo7);
         this.recentPhotos.setValue(vec);
     }
 

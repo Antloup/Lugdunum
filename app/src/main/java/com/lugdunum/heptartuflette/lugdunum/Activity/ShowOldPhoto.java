@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,11 +23,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -91,31 +96,36 @@ public class ShowOldPhoto extends AppCompatActivity {
         //Set RecentPhoto Picture
         GridLayout layout = (GridLayout)findViewById(R.id.Grid1);
         layout.removeAllViews();
+//        layout.setBackgroundColor(Color.parseColor("#ff0000"));
 
         int total = recentPhotoProvider.getRecentPhoto().size();
         int column = 2;
         int row = ((total / column)+1)*2;
         layout.setColumnCount(column);
         layout.setRowCount(row);
+
+        ImageView image = null;
+
         for (int i = 0, c = 0, r = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
-//            if (c == column) {
-//                c = 0;
-//                r+=2;
-//            }
-            ImageView image = new ImageView(this);
-            image.setImageBitmap(recentPhoto.getImage());
-            image.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
 
-            GridLayout.Spec rowSpan = GridLayout.spec(GridLayout.UNDEFINED, 1);
-            GridLayout.Spec colSpan = GridLayout.spec(GridLayout.UNDEFINED, 1);
-//            if (r == 0 && c == 0) {
-//                colSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
-//                rowSpan = GridLayout.spec(GridLayout.UNDEFINED, 2);
-//            }
+            if (c == column) {
+                c = 0;
+                r+= 2;
+            }
+            image = new ImageView(this);
+            image.setImageBitmap(recentPhoto.getImage());
+//            image.setBackgroundColor(Color.parseColor("#00ff00"));
+            image.setPadding(20,20,20,20);
+
+            GridLayout.Spec rowSpan = GridLayout.spec(r, 1);
+            GridLayout.Spec colSpan = GridLayout.spec(c, 1);
             GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
                     rowSpan, colSpan
             );
+
+            gridParam.setGravity(Gravity.CENTER_HORIZONTAL);
+            gridParam.columnSpec = GridLayout.spec(c, 1f);
             layout.addView(image,gridParam);
 
             image.setOnClickListener(new View.OnClickListener() {
@@ -125,10 +135,15 @@ public class ShowOldPhoto extends AppCompatActivity {
                 }
             });
 
+            //Rating Bars
+            rowSpan = GridLayout.spec(r+1, 1);
             gridParam = new GridLayout.LayoutParams(
                     rowSpan, colSpan
             );
+            gridParam.setGravity(Gravity.CENTER_HORIZONTAL);
             RatingBar ratingBar = new RatingBar(this, null, R.attr.ratingBarStyleSmall);
+//            ratingBar.setBackgroundColor(Color.parseColor("#0000ff"));
+            ratingBar.setNumStars(5);
             ratingBar.setRating((float) recentPhoto.getScore());
             layout.addView(ratingBar,gridParam);
 

@@ -21,8 +21,7 @@ import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 public class OldPhotoProvider {
-    //TODO : set the good request
-    private String request = "/images/";
+    private String request = "/photoList/";
     private MutableLiveData<Vector<OldPhoto>> oldPhotos;
 
     public OldPhotoProvider(int id) {
