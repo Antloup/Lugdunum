@@ -166,6 +166,7 @@ public class ShowOldPhoto extends AppCompatActivity {
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, _bs);
 
             myIntent.putExtra("imageByteArray", _bs.toByteArray());
+            myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
             startActivity(myIntent);
         }
     }

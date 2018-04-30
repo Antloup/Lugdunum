@@ -15,6 +15,7 @@ import com.lugdunum.heptartuflette.lugdunum.R;
 public class TakePhoto extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private Bitmap oldPhotoBitmap;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,6 +43,9 @@ public class TakePhoto extends AppCompatActivity {
         setContentView(R.layout.activity_take_photo);
         ImageView iv = (ImageView)findViewById(R.id.imageViewCamera);
 
+        /* Fill up view */
+
+        // Put camera picture
         if(getIntent().hasExtra("imageByteArray")) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(
                     getIntent().getByteArrayExtra("imageByteArray"),0,
@@ -52,7 +56,10 @@ public class TakePhoto extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
+        // Put OldPhoto picture
+        oldPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("oldPhotoBitmap");
+        ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
+        oldImageView.setImageBitmap(oldPhotoBitmap);
 
     }
 
