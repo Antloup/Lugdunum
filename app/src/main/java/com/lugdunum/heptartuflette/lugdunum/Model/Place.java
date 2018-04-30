@@ -9,12 +9,14 @@ public class Place {
     private LatLng location;
     private Vector<OldPhoto> oldPhotos;
     private Vector<RecentPhoto> recentPhotos;
+    private String description;
 
-    public Place(int id, LatLng location, Vector<OldPhoto> oldPhotos, Vector<RecentPhoto> recentPhotos) {
+    public Place(int id, LatLng location,String description, Vector<OldPhoto> oldPhotos, Vector<RecentPhoto> recentPhotos) {
         this.id = id;
         this.location = location;
         this.oldPhotos = oldPhotos;
         this.recentPhotos = recentPhotos;
+        this.description = description;
     }
 
     public LatLng getLocation() {
@@ -31,5 +33,9 @@ public class Place {
 
     public int getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

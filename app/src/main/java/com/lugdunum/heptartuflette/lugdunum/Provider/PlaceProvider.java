@@ -29,13 +29,21 @@ public class PlaceProvider {
         fetchPlaces();
     }
 
+    public PlaceProvider(int id){
+        this.places = new MutableLiveData<Vector<Place>>() {};
+        this.places.setValue(new Vector<Place>());
+        request = "/places/"+id;
+        fetchPlaces();
+
+    }
+
     private void fetchPlaces() {
 
         // Connecting / get Json
-        JsonToModel();
+//        JsonToModel();
 
         // Mock provider for testing purposes
-//        MockPlaces();
+        MockPlaces();
 
     }
 
@@ -45,9 +53,9 @@ public class PlaceProvider {
 
     public void MockPlaces(){
         Vector<Place> vec = places.getValue();
-        Place place1 = new Place(1,new LatLng(45.78218,4.86912), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-        Place place2 = new Place(2,new LatLng(45.78389,4.87412), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
-        Place place3 = new Place(3,new LatLng(45.78538,4.88642), new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+        Place place1 = new Place(1,new LatLng(45.78218,4.86912),"Description1", new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+        Place place2 = new Place(2,new LatLng(45.78389,4.87412),"Description2", new Vector<OldPhoto>(),new Vector<RecentPhoto>());
+        Place place3 = new Place(3,new LatLng(45.78538,4.88642),"Description3", new Vector<OldPhoto>(),new Vector<RecentPhoto>());
         this.places.getValue().add(place1);
         this.places.getValue().add(place2);
         this.places.getValue().add(place3);
@@ -64,7 +72,8 @@ public class PlaceProvider {
                 JSONObject obj = json.getJSONObject(i);
                 double lat = obj.getDouble("latitude");
                 double lng = obj.getDouble("longitude");
-                Place place = new Place(i, new LatLng(lat, lng), new Vector<OldPhoto>(), new Vector<RecentPhoto>());
+                String description = obj.getString("description");
+                Place place = new Place(i, new LatLng(lat, lng),description, new Vector<OldPhoto>(), new Vector<RecentPhoto>());
                 vec.add(place);
             }
         } catch (InterruptedException e) {

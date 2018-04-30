@@ -101,4 +101,8 @@ public class RecentPhotoProvider {
         this.recentPhotos.setValue(vec);
     }
 
+    public Vector<RecentPhoto> getRecentPhoto() {
+        return recentPhotos.getValue();
+    }
+
 }

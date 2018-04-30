@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lugdunum.heptartuflette.lugdunum.Provider.OldPhotoProvider;
+import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
@@ -35,6 +36,7 @@ public class ShowOldPhoto extends AppCompatActivity {
     private int id;
     private OldPhotoProvider oldPhotoProvider;
     private RecentPhotoProvider recentPhotoProvider;
+    private PlaceProvider placeProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         //Create provider / fill content
         oldPhotoProvider = new OldPhotoProvider(id);
         recentPhotoProvider = new RecentPhotoProvider(id);
+        placeProvider = new PlaceProvider(id);
 
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
@@ -81,7 +84,8 @@ public class ShowOldPhoto extends AppCompatActivity {
         textView.setText(oldPhotoProvider.getOldPhotos().firstElement().getDate());
         textView = (TextView) findViewById(R.id.TextDescription);
         textView.setText(oldPhotoProvider.getOldPhotos().firstElement().getDescription());
-        //TODO: set Place text
+        textView = (TextView) findViewById(R.id.TextLieu);
+        textView.setText(placeProvider.getPlaces().getValue().get(0).getDescription());
     }
 
     private void compareOldPhoto(){
