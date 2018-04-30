@@ -54,7 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_row="3"
-            android:numStars="5" />
+            android:clickable="false"
+            android:numStars="5"
+            android:rating="0" />
 
         <Button
             android:id="@+id/buttonVoter"
