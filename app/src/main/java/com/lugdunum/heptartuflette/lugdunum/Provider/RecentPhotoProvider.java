@@ -32,15 +32,9 @@ public class RecentPhotoProvider {
         this.recentPhotos = new MutableLiveData<Vector<RecentPhoto>>() {};
         this.recentPhotos.setValue(new Vector<RecentPhoto>());
 
-        // Connecting / get Json
-        JsonToModel();
-
-        // Mock provider for testing purposes
-//        MockData();
-
     }
 
-    public void JsonToModel(){
+    public void FetchData(){
         Vector<RecentPhoto> vec = recentPhotos.getValue();
         try {
             JSONArray json = new JsonUtils()

@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 == PackageManager.PERMISSION_GRANTED) {
             // permission granted !
             placeProvider = new PlaceProvider();
+            placeProvider.FetchData();
             fillMap();
         } else {
             // request the permission
@@ -223,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission granted !
                     placeProvider = new PlaceProvider();
+                    placeProvider.FetchData();
                     fillMap();
                 } else {
                     // permission denied
@@ -307,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                placeProvider.fetchPlaces();
+                placeProvider.FetchData();
                 Toast toast = Toast.makeText(getApplicationContext(), R.string.refreshing, Toast.LENGTH_SHORT);
                 toast.show();
                 return true;
