@@ -96,4 +96,30 @@ public class OldPhotoProvider {
     public Vector<OldPhoto> getOldPhotos() {
         return oldPhotos.getValue();
     }
+
+    public void postPhoto(OldPhoto photo) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("name",photo.getName());
+            obj.put("photoFormat",photo.getPhotoFormat());
+            obj.put("description",photo.getDescription());
+            obj.put("date",photo.getDate());
+            obj.put("infoLink",photo.getInfoLink());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String postRequest = obj.toString();
+        try {
+            try {
+                JSONArray json = new JsonUtils()
+                        .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,postRequest)).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
 }

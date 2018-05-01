@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.lugdunum.heptartuflette.lugdunum.Model.OldPhoto;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
 public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback {
@@ -33,8 +35,19 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Button contributeButton = (Button) findViewById(R.id.contributeButton);
+        contributeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                addPhoto();
+            }
+        });
         // TODO: pop the current activity and don't reload main activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void addPhoto() {
+//        OldPhoto photo = new OldPhoto();
     }
 
     @Override
@@ -59,6 +72,4 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laDoua));
     }
-
-
 }

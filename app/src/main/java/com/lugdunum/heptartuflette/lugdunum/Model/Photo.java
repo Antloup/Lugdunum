@@ -18,6 +18,11 @@ public class Photo {
         this.photoFormat = photoFormat;
         this.image = image;
     }
+    public Photo(String name, String photoFormat, Bitmap image) {
+        this.name = name;
+        this.photoFormat = photoFormat;
+        this.image = image;
+    }
 
     public String getName() {
         return name;

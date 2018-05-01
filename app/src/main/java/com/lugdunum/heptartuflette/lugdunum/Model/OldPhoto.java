@@ -17,7 +17,12 @@ public class OldPhoto extends Photo {
         this.description = description;
         this.infoLink = infoLink;
     }
-
+    public OldPhoto(String name, String photoFormat, Bitmap image, String date, String description, String infoLink) {
+        super(name, photoFormat, image);
+        this.date = date;
+        this.description = description;
+        this.infoLink = infoLink;
+    }
     public String getDate() {
         return date;
     }

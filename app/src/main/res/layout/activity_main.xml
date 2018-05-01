@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -41,6 +40,7 @@
         android:layout_gravity="bottom|center"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_perso"
+        android:tooltipText="@string/title_activity_add_old_photo"
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@android:drawable/btn_plus" />
 
