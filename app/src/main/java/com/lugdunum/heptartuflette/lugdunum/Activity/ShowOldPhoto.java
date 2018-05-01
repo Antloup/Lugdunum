@@ -107,7 +107,11 @@ public class ShowOldPhoto extends AppCompatActivity {
 //        layout.setRowCount(row);
 
         //Set text
-        TextView textView = (TextView) findViewById(R.id.TextDate);
+        TextView textView = (TextView) findViewById(R.id.TextTitle);
+        textView.setText(oldPhoto.getName());
+
+
+        textView = (TextView) findViewById(R.id.TextDate);
         textView.setText(oldPhoto.getDate());
 //        layout.addView(textView,gridParam);
 
@@ -153,7 +157,7 @@ public class ShowOldPhoto extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     ImageView im = (ImageView) v;
-                    compareOldPhoto(((BitmapDrawable)im.getDrawable()).getBitmap());
+                    compareOldPhoto(im.getDrawingCache());
                 }
             });
 

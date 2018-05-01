@@ -71,7 +71,7 @@ public class PlaceProvider {
             if(json != null){
                 for (int i = 0; i < json.length(); i++) {
                     JSONObject obj = json.getJSONObject(i);
-                    int id = obj.getInt("pk");
+                    int id = obj.getInt("id");
                     double lat = obj.getDouble("latitude");
                     double lng = obj.getDouble("longitude");
                     String description = obj.getString("description");
