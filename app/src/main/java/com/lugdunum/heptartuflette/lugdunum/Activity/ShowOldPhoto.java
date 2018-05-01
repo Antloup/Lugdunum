@@ -36,6 +36,8 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.lugdunum.heptartuflette.lugdunum.Model.OldPhoto;
+import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Provider.OldPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
@@ -43,6 +45,7 @@ import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Vector;
 
 public class ShowOldPhoto extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -79,36 +82,55 @@ public class ShowOldPhoto extends AppCompatActivity {
         oldPhotoProvider = new OldPhotoProvider(id);
         recentPhotoProvider = new RecentPhotoProvider(id);
         placeProvider = new PlaceProvider(id);
+        Place place = placeProvider.getPlaces().getValue().get(0);
+        OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
+
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         oldPhotoBitmap = oldPhotoProvider.getOldPhotos().firstElement().getImage();
         Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
 
-        this.setTitle(oldPhotoProvider.getOldPhotos().firstElement().getName());
-
-        //Set text
-        TextView textView = (TextView) findViewById(R.id.TextDate);
-        textView.setText(oldPhotoProvider.getOldPhotos().firstElement().getDate());
-        textView = (TextView) findViewById(R.id.TextDescription);
-        textView.setText(placeProvider.getPlaces().getValue().get(0).getDescription());
-        textView = (TextView) findViewById(R.id.TextLieu);
-        textView.setText(placeProvider.getPlaces().getValue().get(0).getDescription());
-
         //Set RecentPhoto Picture
         GridLayout layout = (GridLayout)findViewById(R.id.Grid1);
+        View viewContent = (View)findViewById(R.id.Content);
         layout.removeAllViews();
 //        layout.setBackgroundColor(Color.parseColor("#ff0000"));
 
         int total = recentPhotoProvider.getRecentPhoto().size();
         int column = 2;
-        int row = ((total / column)+1)*2;
+        int row = (((total / column)+1)*2)+3;
+        int r = 0;
+        int c = 0;
         layout.setColumnCount(column);
         layout.setRowCount(row);
 
-        ImageView image = null;
+        GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
+                GridLayout.spec(r, 1), GridLayout.spec(c, 2)
+        );
 
-        for (int i = 0, c = 0, r = 0; i < total; i++, c++) {
+        //Set text
+        TextView textView = (TextView) viewContent.findViewById(R.id.TextDate);
+        textView.setText(oldPhoto.getDate());
+        layout.addView(textView,gridParam);
+
+        textView = (TextView) viewContent.findViewById(R.id.TextDescription);
+        textView.setText(place.getDescription());
+        gridParam = new GridLayout.LayoutParams(
+                GridLayout.spec(++r, 1), GridLayout.spec(++c, 2)
+        );
+        layout.addView(textView,gridParam);
+
+        textView = (TextView) viewContent.findViewById(R.id.TextLieu);
+        textView.setText(place.getDescription());
+        gridParam = new GridLayout.LayoutParams(
+                GridLayout.spec(++r, 1), GridLayout.spec(++c, 2)
+        );
+        layout.addView(textView,gridParam);
+
+        //Set image
+        ImageView image = null;
+        for (int i = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
 
             if (c == column) {
@@ -122,7 +144,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
             GridLayout.Spec rowSpan = GridLayout.spec(r, 1);
             GridLayout.Spec colSpan = GridLayout.spec(c, 1);
-            GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
+            gridParam = new GridLayout.LayoutParams(
                     rowSpan, colSpan
             );
 
