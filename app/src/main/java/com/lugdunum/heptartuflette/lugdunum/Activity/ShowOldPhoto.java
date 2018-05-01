@@ -37,6 +37,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.lugdunum.heptartuflette.lugdunum.Model.OldPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
@@ -136,7 +138,9 @@ public class ShowOldPhoto extends AppCompatActivity {
                 r+= 2;
             }
             image = new ImageView(this);
-            Glide.with(this).load(bitmap).into(image);
+            RequestOptions opt = new RequestOptions();
+            opt.centerCrop().override(500,400);
+            Glide.with(this).load(bitmap).apply(opt).into(image);
 //            image.setBackgroundColor(Color.parseColor("#00ff00"));
             image.setPadding(20,20,20,20);
 
