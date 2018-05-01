@@ -18,24 +18,24 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 public class OldPhotoProvider {
-    private String request = "/photoList/";
+    private String request = "/Lugdunum/photoList/";
     private MutableLiveData<Vector<OldPhoto>> oldPhotos;
 
     public OldPhotoProvider(int id) {
         request += id;
-
         this.oldPhotos = new MutableLiveData<Vector<OldPhoto>>() {};
         this.oldPhotos.setValue(new Vector<OldPhoto>());
 
         // Connecting / get Json
-//        JsonToModel();
+        JsonToModel();
 
         // Mock provider for testing purposes
-        MockData();
+//        MockData();
 
     }
 
@@ -48,16 +48,18 @@ public class OldPhotoProvider {
             OldPhoto photo = null;
             for (int i = 0 ; i < json.length(); i++) {
                 JSONObject obj = json.getJSONObject(i);
-                int id = obj.getInt("id");
+
+                //Not implementing yet
+//                int id = obj.getInt("id");
+//                String date = obj.getString("date");
+//                String description = obj.getString("description");
+//                String infoLink = obj.getString("infoLink");
                 String name = obj.getString("name");
-                String date = obj.getString("date");
-                String description = obj.getString("description");
-                String infoLink = obj.getString("infoLink");
                 String format = obj.getString("format");
-                String image = obj.getString("image");
+                String image = obj.getString("file");
                 byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                photo = new OldPhoto(id,name,format,decodedByte,date,description,infoLink);
+                photo = new OldPhoto(0,name,format,decodedByte,"Date","Description","info");
                 vec.add(photo);
             }
 
