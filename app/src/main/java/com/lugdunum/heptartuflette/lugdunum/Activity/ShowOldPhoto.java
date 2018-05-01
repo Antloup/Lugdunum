@@ -90,48 +90,45 @@ public class ShowOldPhoto extends AppCompatActivity {
         oldPhotoBitmap = oldPhotoProvider.getOldPhotos().firstElement().getImage();
         Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
+        setTitle(oldPhotoProvider.getOldPhotos().firstElement().getName());
 
         //Set RecentPhoto Picture
         GridLayout layout = (GridLayout)findViewById(R.id.Grid1);
         View viewContent = (View)findViewById(R.id.Content);
-        layout.removeAllViews();
+//        layout.removeAllViews();
 //        layout.setBackgroundColor(Color.parseColor("#ff0000"));
 
         int total = recentPhotoProvider.getRecentPhoto().size();
         int column = 2;
-        int row = (((total / column)+1)*2)+3;
-        int r = 0;
+//        int row = (((total / column)+1)*2)+3;
+        int r = 4;
         int c = 0;
         layout.setColumnCount(column);
-        layout.setRowCount(row);
-
-        GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
-                GridLayout.spec(r, 1), GridLayout.spec(c, 2)
-        );
+//        layout.setRowCount(row);
 
         //Set text
-        TextView textView = (TextView) viewContent.findViewById(R.id.TextDate);
+        TextView textView = (TextView) findViewById(R.id.TextDate);
         textView.setText(oldPhoto.getDate());
-        layout.addView(textView,gridParam);
+//        layout.addView(textView,gridParam);
 
         textView = (TextView) viewContent.findViewById(R.id.TextDescription);
         textView.setText(place.getDescription());
-        gridParam = new GridLayout.LayoutParams(
-                GridLayout.spec(++r, 1), GridLayout.spec(++c, 2)
-        );
-        layout.addView(textView,gridParam);
+
+//        layout.addView(textView,gridParam);
 
         textView = (TextView) viewContent.findViewById(R.id.TextLieu);
         textView.setText(place.getDescription());
-        gridParam = new GridLayout.LayoutParams(
-                GridLayout.spec(++r, 1), GridLayout.spec(++c, 2)
-        );
-        layout.addView(textView,gridParam);
+
+//        layout.addView(textView,gridParam);
 
         //Set image
         ImageView image = null;
         for (int i = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
+
+            GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
+                    GridLayout.spec(r, 1), GridLayout.spec(c, 2)
+            );
 
             if (c == column) {
                 c = 0;
