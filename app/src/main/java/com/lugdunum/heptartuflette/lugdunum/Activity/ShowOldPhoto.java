@@ -109,14 +109,21 @@ public class ShowOldPhoto extends AppCompatActivity {
         //Set text
         TextView textView = (TextView) findViewById(R.id.TextTitle);
         textView.setText(oldPhoto.getName());
+        textView.setPadding(20,20,20,20);
 
 
         textView = (TextView) findViewById(R.id.TextDate);
         textView.setText(oldPhoto.getDate());
+        textView.setPadding(20,20,20,20);
+
         textView = (TextView) viewContent.findViewById(R.id.TextDescription);
         textView.setText(oldPhoto.getDescription());
+        textView.setPadding(20,20,20,20);
+
         textView = (TextView) viewContent.findViewById(R.id.TextLieu);
         textView.setText(place.getDescription());
+        textView.setPadding(20,20,20,20);
+
 
         //Set image
         ImageView image = null;
