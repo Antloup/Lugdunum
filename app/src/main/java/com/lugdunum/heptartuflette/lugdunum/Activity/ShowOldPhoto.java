@@ -85,7 +85,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
 
-        this.setTitle("Salut");
+        this.setTitle(oldPhotoProvider.getOldPhotos().firstElement().getName());
 
         //Set text
         TextView textView = (TextView) findViewById(R.id.TextDate);
