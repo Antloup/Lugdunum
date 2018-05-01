@@ -23,8 +23,7 @@ import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 public class RecentPhotoProvider {
-    //TODO : set the good request
-    private String request = "/photoList/";
+    private String request = "Lugdunum/recentPhotoList/";
     private MutableLiveData<Vector<RecentPhoto>> recentPhotos;
 
     public RecentPhotoProvider(int id) {
@@ -34,10 +33,10 @@ public class RecentPhotoProvider {
         this.recentPhotos.setValue(new Vector<RecentPhoto>());
 
         // Connecting / get Json
-//        JsonToModel();
+        JsonToModel();
 
         // Mock provider for testing purposes
-        MockData();
+//        MockData();
 
     }
 
@@ -54,13 +53,14 @@ public class RecentPhotoProvider {
                 String name = obj.getString("name");
                 String dateString = obj.getString("date");
 
-                DateFormat dateFormat= new SimpleDateFormat("MMMM d, yyyy", Locale.FRENCH);
+                DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd", Locale.FRENCH);
+                dateString = dateString.substring(0,dateString.indexOf('T'));
                 Date date = dateFormat.parse(dateString);
 
                 Double note = obj.getDouble("note");
                 int noteNumber = obj.getInt("noteNumber");
                 String format = obj.getString("format");
-                String image = obj.getString("image");
+                String image = obj.getString("file");
                 byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 photo = new RecentPhoto(id,name,format,decodedByte,date,note,noteNumber);

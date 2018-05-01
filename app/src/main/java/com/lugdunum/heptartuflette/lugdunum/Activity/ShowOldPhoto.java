@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.lugdunum.heptartuflette.lugdunum.Model.OldPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
@@ -94,7 +95,6 @@ public class ShowOldPhoto extends AppCompatActivity {
 
         //Set RecentPhoto Picture
         GridLayout layout = (GridLayout)findViewById(R.id.Grid1);
-        View viewContent = (View)findViewById(R.id.Content);
 //        layout.removeAllViews();
 //        layout.setBackgroundColor(Color.parseColor("#ff0000"));
 
@@ -109,22 +109,23 @@ public class ShowOldPhoto extends AppCompatActivity {
         //Set text
         TextView textView = (TextView) findViewById(R.id.TextDate);
         textView.setText(oldPhoto.getDate());
-        textView = (TextView) viewContent.findViewById(R.id.TextDescription);
+        textView = (TextView) findViewById(R.id.TextDescription);
         textView.setText(oldPhoto.getDescription());
-        textView = (TextView) viewContent.findViewById(R.id.TextLieu);
+        textView = (TextView) findViewById(R.id.TextLieu);
         textView.setText(place.getDescription());
 
         //Set image
         ImageView image = null;
         for (int i = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
+            Bitmap bitmap = recentPhoto.getImage();
 
             if (c == column) {
                 c = 0;
                 r+= 2;
             }
             image = new ImageView(this);
-            image.setImageBitmap(recentPhoto.getImage());
+            Glide.with(this).load(bitmap).into(image);
 //            image.setBackgroundColor(Color.parseColor("#00ff00"));
             image.setPadding(20,20,20,20);
 
