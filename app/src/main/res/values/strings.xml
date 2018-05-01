@@ -112,4 +112,5 @@
     <string name="add_old_photo_description">Description de votre photo</string>
     <string name="contribute">Contribuer</string>
     <string name="oldPicDate">Date de la photo (approx.)</string>
+    <string name="refreshing">Actualisation</string>
 </resources>

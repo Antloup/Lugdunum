@@ -1,5 +1,6 @@
 package com.lugdunum.heptartuflette.lugdunum.Provider;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -25,6 +25,7 @@ import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -78,12 +79,13 @@ public class ShowOldPhoto extends AppCompatActivity {
         oldPhotoProvider = new OldPhotoProvider(id);
         recentPhotoProvider = new RecentPhotoProvider(id);
         placeProvider = new PlaceProvider(id);
-
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         oldPhotoBitmap = oldPhotoProvider.getOldPhotos().firstElement().getImage();
         Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
+
+        this.setTitle("Salut");
 
         //Set text
         TextView textView = (TextView) findViewById(R.id.TextDate);
@@ -226,6 +228,20 @@ public class ShowOldPhoto extends AppCompatActivity {
             myIntent.putExtra("imageByteArray", _bs.toByteArray());
             myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
             startActivity(myIntent);
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
         }
     }
 
