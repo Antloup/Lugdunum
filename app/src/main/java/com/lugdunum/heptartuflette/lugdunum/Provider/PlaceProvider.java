@@ -40,10 +40,10 @@ public class PlaceProvider {
     private void fetchPlaces() {
 
         // Connecting / get Json
-//        JsonToModel();
+        JsonToModel();
 
         // Mock provider for testing purposes
-        MockPlaces();
+//        MockPlaces();
 
     }
 
@@ -68,13 +68,15 @@ public class PlaceProvider {
             JSONArray json = new JsonUtils()
                     .execute(new URL(JsonUtils.protocol, JsonUtils.host, JsonUtils.port, request))
                     .get();
-            for (int i = 0; i < json.length(); i++) {
-                JSONObject obj = json.getJSONObject(i);
-                double lat = obj.getDouble("latitude");
-                double lng = obj.getDouble("longitude");
-                String description = obj.getString("description");
-                Place place = new Place(i, new LatLng(lat, lng),description, new Vector<OldPhoto>(), new Vector<RecentPhoto>());
-                vec.add(place);
+            if(json != null){
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject obj = json.getJSONObject(i);
+                    double lat = obj.getDouble("latitude");
+                    double lng = obj.getDouble("longitude");
+                    String description = obj.getString("description");
+                    Place place = new Place(i, new LatLng(lat, lng),description, new Vector<OldPhoto>(), new Vector<RecentPhoto>());
+                    vec.add(place);
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

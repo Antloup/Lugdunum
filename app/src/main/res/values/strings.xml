@@ -99,6 +99,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Actualiser</string>
     <string name="old_pic_description">Votre photo ancienne</string>
     <string name="storage_permission_message">Lugdunum a besoin d\'accéder à votre stockage pour que vous puissiez ajouter une photo.</string>
     <string name="title_activity_show_old_photo">Titre photo</string>
