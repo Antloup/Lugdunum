@@ -8,6 +8,7 @@ import com.lugdunum.heptartuflette.lugdunum.Model.OldPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Utils.JsonUtils;
+import com.lugdunum.heptartuflette.lugdunum.Utils.RequestUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,15 +29,18 @@ public class PlaceProvider {
         this.places.setValue(new Vector<Place>());
     }
 
-    public PlaceProvider(int id){
-        this.places = new MutableLiveData<Vector<Place>>() {};
-        this.places.setValue(new Vector<Place>());
+    public void FetchData(int id) {
         request += id;
+
+        // Connecting / get Json
+        JsonToModel();
+
+        // Mock provider for testing purposes
+//        MockPlaces();
 
     }
 
     public void FetchData() {
-        this.places.setValue(new Vector<Place>());
         // Connecting / get Json
         JsonToModel();
 
@@ -63,8 +67,11 @@ public class PlaceProvider {
     private void JsonToModel(){
         Vector<Place> vec = places.getValue();
         try {
+//            JSONArray json = new JsonUtils()
+//                    .execute(new URL(JsonUtils.protocol, JsonUtils.host, JsonUtils.port, request))
+//                    .get();
             JSONArray json = new JsonUtils()
-                    .execute(new URL(JsonUtils.protocol, JsonUtils.host, JsonUtils.port, request))
+                    .execute(new RequestUtils(request))
                     .get();
             if(json != null){
                 for (int i = 0; i < json.length(); i++) {
@@ -84,10 +91,29 @@ public class PlaceProvider {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        catch (MalformedURLException e) {
+        this.places.setValue(vec);
+    }
+
+
+    public void postPlace(Place place) {
+        request = "/Lugdunum/placeUpload/";
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("description",place.getDescription());
+            obj.put("latitude",place.getLocation().latitude);
+            obj.put("longitude",place.getLocation().longitude);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.places.setValue(vec);
+        try {
+            JSONArray json = new JsonUtils()
+                    .execute(new RequestUtils(request,obj))
+                    .get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
 

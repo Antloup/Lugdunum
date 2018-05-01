@@ -1,6 +1,8 @@
 package com.lugdunum.heptartuflette.lugdunum.Activity;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +22,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lugdunum.heptartuflette.lugdunum.Model.OldPhoto;
+import com.lugdunum.heptartuflette.lugdunum.Model.Place;
+import com.lugdunum.heptartuflette.lugdunum.Provider.OldPhotoProvider;
+import com.lugdunum.heptartuflette.lugdunum.Provider.PlaceProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
 public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback {
@@ -48,7 +53,19 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void addPhoto() {
-//        OldPhoto photo = new OldPhoto();
+        //Upload Place
+        PlaceProvider placeProvider = new PlaceProvider();
+        //TODO : fill place
+        Place place = new Place(new LatLng(10,10),"DESC",null,null);
+        placeProvider.postPlace(place);
+
+        //Upload OldPhoto
+        OldPhotoProvider oldPhotoProvider = new OldPhotoProvider();
+        ImageView imageView = (ImageView) findViewById(R.id.oldImg);
+        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        //TODO : fill oldPhoto
+        OldPhoto oldPhoto = new OldPhoto("NAME","FORMAT",bitmap,"DATE","DESC","INFOLINK");
+        oldPhotoProvider.postPhoto(oldPhoto);
     }
 
     @Override

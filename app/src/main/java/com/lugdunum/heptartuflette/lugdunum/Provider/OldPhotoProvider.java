@@ -11,6 +11,7 @@ import com.lugdunum.heptartuflette.lugdunum.Model.OldPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Model.Place;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Utils.JsonUtils;
+import com.lugdunum.heptartuflette.lugdunum.Utils.RequestUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,18 +27,21 @@ public class OldPhotoProvider {
     private String request = "/Lugdunum/photoList/";
     private MutableLiveData<Vector<OldPhoto>> oldPhotos;
 
-    public OldPhotoProvider(int id) {
-        request += id;
+    public OldPhotoProvider() {
         this.oldPhotos = new MutableLiveData<Vector<OldPhoto>>() {};
         this.oldPhotos.setValue(new Vector<OldPhoto>());
 
     }
 
-    public void FetchData(){
+    public void FetchData(int id){
+        request += id;
         Vector<OldPhoto> vec = oldPhotos.getValue();
         try {
+//            JSONArray json = new JsonUtils()
+//                    .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,request))
+//                    .get();
             JSONArray json = new JsonUtils()
-                    .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,request))
+                    .execute(new RequestUtils(request))
                     .get();
             OldPhoto photo = null;
             if(json != null){
@@ -45,7 +49,7 @@ public class OldPhotoProvider {
                     JSONObject obj = json.getJSONObject(i);
 
 //                  String infoLink = obj.getString("infoLink");
-                    int id = obj.getInt("id");
+                    int idPhoto = obj.getInt("id");
                     String date = obj.getString("date");
                     String name = obj.getString("name");
                     String format = obj.getString("format");
@@ -53,7 +57,7 @@ public class OldPhotoProvider {
                     String description = obj.getString("description");
                     byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    photo = new OldPhoto(id,name,format,decodedByte,date,description,"info");
+                    photo = new OldPhoto(idPhoto,name,format,decodedByte,date,description,"info");
                     vec.add(photo);
                 }
             }
@@ -63,9 +67,6 @@ public class OldPhotoProvider {
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
@@ -94,6 +95,7 @@ public class OldPhotoProvider {
     }
 
     public void postPhoto(OldPhoto photo) {
+        request = "/Lugdunum/photoUpload/";
         JSONObject obj = new JSONObject();
         try {
             obj.put("name",photo.getName());
@@ -104,17 +106,13 @@ public class OldPhotoProvider {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String postRequest = obj.toString();
         try {
-            try {
-                JSONArray json = new JsonUtils()
-                        .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,postRequest)).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        } catch (MalformedURLException e) {
+            JSONArray json = new JsonUtils()
+                    .execute(new RequestUtils(request,obj))
+                    .get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }
