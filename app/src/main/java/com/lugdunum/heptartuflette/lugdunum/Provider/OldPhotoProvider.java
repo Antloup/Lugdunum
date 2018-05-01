@@ -46,21 +46,23 @@ public class OldPhotoProvider {
                     .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,request))
                     .get();
             OldPhoto photo = null;
-            for (int i = 0 ; i < json.length(); i++) {
-                JSONObject obj = json.getJSONObject(i);
+            if(json != null){
+                for (int i = 0 ; i < json.length(); i++) {
+                    JSONObject obj = json.getJSONObject(i);
 
-                //Not implementing yet
+                    //Not implementing yet
 //                int id = obj.getInt("id");
 //                String date = obj.getString("date");
 //                String description = obj.getString("description");
 //                String infoLink = obj.getString("infoLink");
-                String name = obj.getString("name");
-                String format = obj.getString("format");
-                String image = obj.getString("file");
-                byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                photo = new OldPhoto(0,name,format,decodedByte,"Date","Description","info");
-                vec.add(photo);
+                    String name = obj.getString("name");
+                    String format = obj.getString("format");
+                    String image = obj.getString("file");
+                    byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    photo = new OldPhoto(0,name,format,decodedByte,"Date","Description","info");
+                    vec.add(photo);
+                }
             }
 
         } catch (InterruptedException e) {
