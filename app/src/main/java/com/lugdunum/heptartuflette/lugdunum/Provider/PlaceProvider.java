@@ -37,8 +37,8 @@ public class PlaceProvider {
 
     }
 
-    private void fetchPlaces() {
-
+    public void fetchPlaces() {
+        this.places.setValue(new Vector<Place>());
         // Connecting / get Json
         JsonToModel();
 
@@ -62,7 +62,7 @@ public class PlaceProvider {
         this.places.setValue(vec);
     }
 
-    public void JsonToModel(){
+    private void JsonToModel(){
         Vector<Place> vec = places.getValue();
         try {
             JSONArray json = new JsonUtils()

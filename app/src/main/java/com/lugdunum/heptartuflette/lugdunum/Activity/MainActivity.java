@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -246,9 +247,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void drawMarkers(Vector<Place> places) {
         if(places != null){
             mClusterManager.clearItems();
+            Log.d("drawMarkers()","CLEARED");
             for(Place p : places){
                 mClusterManager.addItem(new ClusterItemPic(p.getLocation().latitude,p.getLocation().longitude,p.getId()));
             }
+            mClusterManager.cluster();
         }
     }
 
@@ -304,7 +307,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                placeProvider.JsonToModel();
+                placeProvider.fetchPlaces();
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.refreshing, Toast.LENGTH_SHORT);
+                toast.show();
                 return true;
 
             default:

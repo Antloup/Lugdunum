@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,5 +58,18 @@ public class CompareOldPhoto extends AppCompatActivity {
         recentPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("recentPhotoBitmap");
         ImageView recentImageView = (ImageView) findViewById(R.id.imageViewRecent);
         recentImageView.setImageBitmap(recentPhotoBitmap);
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

@@ -25,6 +25,7 @@ import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -250,6 +251,20 @@ public class ShowOldPhoto extends AppCompatActivity {
             myIntent.putExtra("imageByteArray", _bs.toByteArray());
             myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
             startActivity(myIntent);
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
         }
     }
 

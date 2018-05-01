@@ -11,5 +11,6 @@
     <string name="contribute">contribute</string>
     <string name="oldPicDate">Date de la photo (approx.)</string>
     <string name="action_refresh">Refresh</string>
+    <string name="refreshing">Refreshing</string>
 
 </resources>
