@@ -26,18 +26,16 @@ public class PlaceProvider {
     public PlaceProvider() {
         this.places = new MutableLiveData<Vector<Place>>() {};
         this.places.setValue(new Vector<Place>());
-        fetchPlaces();
     }
 
     public PlaceProvider(int id){
         this.places = new MutableLiveData<Vector<Place>>() {};
         this.places.setValue(new Vector<Place>());
         request += id;
-        fetchPlaces();
 
     }
 
-    public void fetchPlaces() {
+    public void FetchData() {
         this.places.setValue(new Vector<Place>());
         // Connecting / get Json
         JsonToModel();

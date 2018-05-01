@@ -83,8 +83,11 @@ public class ShowOldPhoto extends AppCompatActivity {
 
         //Create provider / fill content
         oldPhotoProvider = new OldPhotoProvider(id);
+        oldPhotoProvider.FetchData();
         recentPhotoProvider = new RecentPhotoProvider(id);
+        recentPhotoProvider.FetchData();
         placeProvider = new PlaceProvider(id);
+        placeProvider.FetchData();
         Place place = placeProvider.getPlaces().getValue().get(0);
         OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
 
