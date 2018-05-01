@@ -89,7 +89,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.TextDate);
         textView.setText(oldPhotoProvider.getOldPhotos().firstElement().getDate());
         textView = (TextView) findViewById(R.id.TextDescription);
-        textView.setText(oldPhotoProvider.getOldPhotos().firstElement().getDescription());
+        textView.setText(placeProvider.getPlaces().getValue().get(0).getDescription());
         textView = (TextView) findViewById(R.id.TextLieu);
         textView.setText(placeProvider.getPlaces().getValue().get(0).getDescription());
 
@@ -131,7 +131,8 @@ public class ShowOldPhoto extends AppCompatActivity {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    compareOldPhoto(recentPhoto.getImage());
+                    ImageView im = (ImageView) v;
+                    compareOldPhoto(((BitmapDrawable)im.getDrawable()).getBitmap());
                 }
             });
 

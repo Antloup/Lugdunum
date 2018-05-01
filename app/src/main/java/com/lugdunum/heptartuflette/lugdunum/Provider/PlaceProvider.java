@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 public class PlaceProvider {
 
-    private String request = "/places";
+    private String request = "Lugdunum/places/";
     private MutableLiveData<Vector<Place>> places;
 
     public PlaceProvider() {
@@ -32,7 +32,7 @@ public class PlaceProvider {
     public PlaceProvider(int id){
         this.places = new MutableLiveData<Vector<Place>>() {};
         this.places.setValue(new Vector<Place>());
-        request = "/places/"+id;
+        request += id;
         fetchPlaces();
 
     }
@@ -40,10 +40,10 @@ public class PlaceProvider {
     private void fetchPlaces() {
 
         // Connecting / get Json
-//        JsonToModel();
+        JsonToModel();
 
         // Mock provider for testing purposes
-        MockPlaces();
+//        MockPlaces();
 
     }
 
@@ -70,10 +70,11 @@ public class PlaceProvider {
                     .get();
             for (int i = 0; i < json.length(); i++) {
                 JSONObject obj = json.getJSONObject(i);
+                int id = obj.getInt("pk");
                 double lat = obj.getDouble("latitude");
                 double lng = obj.getDouble("longitude");
                 String description = obj.getString("description");
-                Place place = new Place(i, new LatLng(lat, lng),description, new Vector<OldPhoto>(), new Vector<RecentPhoto>());
+                Place place = new Place(id, new LatLng(lat, lng),description, new Vector<OldPhoto>(), new Vector<RecentPhoto>());
                 vec.add(place);
             }
         } catch (InterruptedException e) {
