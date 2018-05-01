@@ -50,18 +50,16 @@ public class OldPhotoProvider {
                 for (int i = 0 ; i < json.length(); i++) {
                     JSONObject obj = json.getJSONObject(i);
 
-                    //Not implementing yet
-//                String description = obj.getString("description");
-//                String infoLink = obj.getString("infoLink");
-
+//                  String infoLink = obj.getString("infoLink");
                     int id = obj.getInt("id");
                     String date = obj.getString("date");
                     String name = obj.getString("name");
                     String format = obj.getString("format");
                     String image = obj.getString("file");
+                    String description = obj.getString("description");
                     byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    photo = new OldPhoto(id,name,format,decodedByte,date,"Description","info");
+                    photo = new OldPhoto(id,name,format,decodedByte,date,description,"info");
                     vec.add(photo);
                 }
             }

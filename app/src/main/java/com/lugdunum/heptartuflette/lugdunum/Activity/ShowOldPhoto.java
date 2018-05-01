@@ -87,10 +87,10 @@ public class ShowOldPhoto extends AppCompatActivity {
 
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-        oldPhotoBitmap = oldPhotoProvider.getOldPhotos().firstElement().getImage();
+        oldPhotoBitmap = oldPhoto.getImage();
         Drawable drawable = new BitmapDrawable(getResources(), oldPhotoBitmap);
         appBarLayout.setBackground(drawable);
-        setTitle(oldPhotoProvider.getOldPhotos().firstElement().getName());
+        setTitle(oldPhoto.getName());
 
         //Set RecentPhoto Picture
         GridLayout layout = (GridLayout)findViewById(R.id.Grid1);
@@ -109,26 +109,15 @@ public class ShowOldPhoto extends AppCompatActivity {
         //Set text
         TextView textView = (TextView) findViewById(R.id.TextDate);
         textView.setText(oldPhoto.getDate());
-//        layout.addView(textView,gridParam);
-
         textView = (TextView) viewContent.findViewById(R.id.TextDescription);
-        textView.setText(place.getDescription());
-
-//        layout.addView(textView,gridParam);
-
+        textView.setText(oldPhoto.getDescription());
         textView = (TextView) viewContent.findViewById(R.id.TextLieu);
         textView.setText(place.getDescription());
-
-//        layout.addView(textView,gridParam);
 
         //Set image
         ImageView image = null;
         for (int i = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
-
-            GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
-                    GridLayout.spec(r, 1), GridLayout.spec(c, 2)
-            );
 
             if (c == column) {
                 c = 0;
@@ -141,7 +130,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
             GridLayout.Spec rowSpan = GridLayout.spec(r, 1);
             GridLayout.Spec colSpan = GridLayout.spec(c, 1);
-            gridParam = new GridLayout.LayoutParams(
+            GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
                     rowSpan, colSpan
             );
 
