@@ -2,6 +2,7 @@ package com.lugdunum.heptartuflette.lugdunum.Activity;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -62,6 +64,11 @@ public class ShowOldPhoto extends AppCompatActivity {
     private PlaceProvider placeProvider;
     private Bitmap oldPhotoBitmap;
     private Bitmap recentPhotoBitmap;
+    private GridLayout layout;
+    private GridLayout gridPhotos;
+    private Place place;
+    private OldPhoto oldPhoto;
+    private boolean init = false;
     RecentPhoto recentPhoto;
 
     @Override
@@ -92,8 +99,8 @@ public class ShowOldPhoto extends AppCompatActivity {
         recentPhotoProvider.FetchData(id);
         placeProvider = new PlaceProvider();
         placeProvider.FetchData(id);
-        Place place = placeProvider.getPlaces().getValue().get(0);
-        final OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
+        place = placeProvider.getPlaces().getValue().get(0);
+        oldPhoto = oldPhotoProvider.getOldPhotos().getValue().get(0);
 
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
@@ -103,16 +110,30 @@ public class ShowOldPhoto extends AppCompatActivity {
         setTitle(oldPhoto.getName());
 
         //Set RecentPhoto Picture
-        GridLayout layout = (GridLayout)findViewById(R.id.Grid1);
-//        layout.removeAllViews();
-//        layout.setBackgroundColor(Color.parseColor("#ff0000"));
+        layout = (GridLayout)findViewById(R.id.Grid);
+        gridPhotos = (GridLayout)findViewById(R.id.GridPhotos);
 
-        int total = recentPhotoProvider.getRecentPhoto().size();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        gridPhotos.removeAllViews();
+        recentPhotoProvider = new RecentPhotoProvider();
+        recentPhotoProvider.FetchData(id);
+        refreshGrid();
+    }
+
+    private void refreshGrid(){
+
+        int total = recentPhotoProvider.getRecentPhoto().getValue().size();
         int column = 2;
 //        int row = (((total / column)+1)*2)+3;
-        int r = 4;
+        int r = 0;
         int c = 0;
         layout.setColumnCount(column);
+        gridPhotos.setColumnCount(column);
+//        layout.setColumnCount(column);
 //        layout.setRowCount(row);
 
         //Set text
@@ -137,7 +158,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         //Set image
         ImageView image = null;
         for (int i = 0; i < total; i++, c++) {
-            recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
+            recentPhoto = recentPhotoProvider.getRecentPhoto().getValue().get(i);
             final Bitmap bitmap = recentPhoto.getImage();
 
             if (c == column) {
@@ -149,7 +170,6 @@ public class ShowOldPhoto extends AppCompatActivity {
             RequestOptions opt = new RequestOptions();
             opt.centerCrop().override(500,400);
             Glide.with(this).load(bitmap).apply(opt).into(image);
-//            image.setBackgroundColor(Color.parseColor("#00ff00"));
             image.setPadding(20,20,20,20);
 
             GridLayout.Spec rowSpan = GridLayout.spec(r, 1);
@@ -160,7 +180,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
             gridParam.setGravity(Gravity.CENTER_HORIZONTAL);
             gridParam.columnSpec = GridLayout.spec(c, 1f);
-            layout.addView(image,gridParam);
+            gridPhotos.addView(image,gridParam);
 
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -182,13 +202,12 @@ public class ShowOldPhoto extends AppCompatActivity {
             );
             gridParam.setGravity(Gravity.CENTER_HORIZONTAL);
             RatingBar ratingBar = new RatingBar(this, null, R.attr.ratingBarStyleSmall);
-//            ratingBar.setBackgroundColor(Color.parseColor("#0000ff"));
+            ratingBar.setId(recentPhoto.getId());
             ratingBar.setNumStars(5);
             ratingBar.setRating((float) recentPhoto.getScore());
-            layout.addView(ratingBar,gridParam);
+            gridPhotos.addView(ratingBar,gridParam);
 
         }
-
     }
 
     private void compareOldPhoto(String recentPhotoName, String oldPhotoName, int id){
@@ -290,6 +309,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
             myIntent.putExtra("imageName", fileName);
             myIntent.putExtra("oldPhotoName",oldPhotoName);
+            myIntent.putExtra("idPlace",place.getId());
             startActivity(myIntent);
         }
     }

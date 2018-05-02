@@ -111,7 +111,8 @@ public class TakePhoto extends AppCompatActivity {
             public void onClick(View v) {
                 RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
                 //TODO: Fill Photo
-                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",null,new Date()));
+                int id = getIntent().getIntExtra("idPlace",0);
+                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",null,new Date()),id);
             }
         });
 
