@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,18 +63,35 @@ public class TakePhoto extends AppCompatActivity {
         /* Fill up view */
 
         // Put camera picture
-        if(getIntent().hasExtra("imageByteArray")) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(
-                    getIntent().getByteArrayExtra("imageByteArray"),0,
-                    getIntent().getByteArrayExtra("imageByteArray").length
-            );
-            iv.setImageBitmap(bitmap);
+//        if(getIntent().hasExtra("imageByteArray")) {
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(
+//                    getIntent().getByteArrayExtra("imageByteArray"),0,
+//                    getIntent().getByteArrayExtra("imageByteArray").length
+//            );
+//            iv.setImageBitmap(bitmap);
+//
+//        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        String filename = getIntent().getStringExtra("imageName");
+        try {
+            FileInputStream is = this.openFileInput(filename);
+            iv.setImageBitmap(BitmapFactory.decodeStream(is));
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        filename = getIntent().getStringExtra("oldPhotoName");
+        try {
+            FileInputStream is = this.openFileInput(filename);
+            oldPhotoBitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Put OldPhoto picture
-        oldPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("oldPhotoBitmap");
+//        oldPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("oldPhotoBitmap");
         ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
         oldImageView.setImageBitmap(oldPhotoBitmap);
 

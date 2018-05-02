@@ -2,6 +2,7 @@ package com.lugdunum.heptartuflette.lugdunum.Activity;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +50,9 @@ import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Vector;
 
 public class ShowOldPhoto extends AppCompatActivity {
@@ -89,7 +94,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         placeProvider = new PlaceProvider(id);
         placeProvider.FetchData();
         Place place = placeProvider.getPlaces().getValue().get(0);
-        OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
+        final OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
 
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
@@ -134,7 +139,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         ImageView image = null;
         for (int i = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
-            Bitmap bitmap = recentPhoto.getImage();
+            final Bitmap bitmap = recentPhoto.getImage();
 
             if (c == column) {
                 c = 0;
@@ -161,7 +166,12 @@ public class ShowOldPhoto extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     ImageView im = (ImageView) v;
-                    compareOldPhoto(im.getDrawingCache());
+                    String recentName = "recent"+recentPhoto.getId();
+                    String oldName = "old"+oldPhoto.getId();
+
+                    writeBitmap(bitmap,recentName);
+                    writeBitmap(oldPhotoBitmap,oldName);
+                    compareOldPhoto(recentName,oldName);
                 }
             });
 
@@ -181,13 +191,32 @@ public class ShowOldPhoto extends AppCompatActivity {
 
     }
 
-    private void compareOldPhoto(Bitmap recentPhoto){
+    private void compareOldPhoto(String recentPhotoName, String oldPhotoName){
         Intent myIntent = new Intent(this, CompareOldPhoto.class);
-        myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
-        myIntent.putExtra("recentPhotoBitmap",recentPhoto);
+        myIntent.putExtra("oldPhotoName",oldPhotoName);
+        myIntent.putExtra("recentPhotoName",recentPhotoName);
         startActivity(myIntent);
     }
 
+
+    private void writeBitmap (Bitmap bmp, String fileName) {
+        try {
+            //Write file
+            FileOutputStream stream = this.openFileOutput(fileName, Context.MODE_PRIVATE);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+            //Cleanup
+            stream.close();
+//            bmp.recycle();
+
+            //Pop intent
+//            Intent in1 = new Intent(this, Activity2.class);
+//            in1.putExtra("image", fileName);
+//            startActivity(in1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -247,14 +276,18 @@ public class ShowOldPhoto extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            String fileName = "userImg";
+            String oldPhotoName = "old";
+            writeBitmap(imageBitmap,fileName);
+            writeBitmap(oldPhotoBitmap,oldPhotoName);
             Intent myIntent = new Intent(this, TakePhoto.class);
 
             //Converting bitmap to byteArray
-            ByteArrayOutputStream _bs = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, _bs);
+//            ByteArrayOutputStream _bs = new ByteArrayOutputStream();
+//            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, _bs);
 
-            myIntent.putExtra("imageByteArray", _bs.toByteArray());
-            myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
+            myIntent.putExtra("imageName", fileName);
+            myIntent.putExtra("oldPhotoName",oldPhotoName);
             startActivity(myIntent);
         }
     }
