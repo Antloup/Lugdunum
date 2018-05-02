@@ -145,6 +145,7 @@ public class ShowOldPhoto extends AppCompatActivity {
                 r+= 2;
             }
             image = new ImageView(this);
+            image.setId(recentPhoto.getId());
             RequestOptions opt = new RequestOptions();
             opt.centerCrop().override(500,400);
             Glide.with(this).load(bitmap).apply(opt).into(image);
@@ -170,7 +171,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
                     writeBitmap(bitmap,recentName);
                     writeBitmap(oldPhotoBitmap,oldName);
-                    compareOldPhoto(recentName,oldName, recentPhoto.getId());
+                    compareOldPhoto(recentName,oldName, im.getId());
                 }
             });
 
@@ -195,6 +196,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         myIntent.putExtra("oldPhotoName",oldPhotoName);
         myIntent.putExtra("recentPhotoName",recentPhotoName);
         myIntent.putExtra("id",id);
+        Log.e("IDIMG",String.valueOf(id));
         startActivity(myIntent);
     }
 

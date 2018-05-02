@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Utils.JsonUtils;
@@ -145,9 +146,9 @@ public class RecentPhotoProvider {
 
     public void postVote(int idPhoto, float note) {
         request = "/Lugdunum/voteUpload/";
+        request += String.valueOf(idPhoto);
         JSONObject obj = new JSONObject();
         try {
-            obj.put("id",String.valueOf(idPhoto));
             obj.put("note",String.valueOf(note));
         } catch (JSONException e) {
             e.printStackTrace();
