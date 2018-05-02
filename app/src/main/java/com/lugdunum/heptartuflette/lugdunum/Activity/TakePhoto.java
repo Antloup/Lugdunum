@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
+import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
 import java.io.File;
@@ -95,11 +97,21 @@ public class TakePhoto extends AppCompatActivity {
         ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
         oldImageView.setImageBitmap(oldPhotoBitmap);
 
-        Button button= (Button) findViewById(R.id.button);
+        Button button= (Button) findViewById(R.id.save);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+            }
+        });
+
+        button= (Button) findViewById(R.id.upload);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
+                //TODO: Fill Photo
+                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",null,new Date()));
             }
         });
 

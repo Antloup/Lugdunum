@@ -17,6 +17,11 @@ public class RecentPhoto extends Photo {
         this.voteNumber = voteNumber;
     }
 
+    public RecentPhoto(String name, String photoFormat, Bitmap image, Date date) {
+        super(name, photoFormat, image);
+        this.date = date;
+    }
+
     public Date getDate() {
         return date;
     }

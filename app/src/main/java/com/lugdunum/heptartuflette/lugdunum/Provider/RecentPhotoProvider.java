@@ -163,6 +163,28 @@ public class RecentPhotoProvider {
         }
     }
 
+    public void postPhoto(RecentPhoto photo) {
+        request = "/Lugdunum/recentPhotoUpload/";
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("name",photo.getName());
+            obj.put("format",photo.getPhotoFormat());
+            obj.put("date",photo.getDate());
+            obj.put("file",photo.getImage());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            JSONArray json = new JsonUtils()
+                    .execute(new RequestUtils(request,obj))
+                    .get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Vector<RecentPhoto> getRecentPhoto() {
         return recentPhotos.getValue();
     }
