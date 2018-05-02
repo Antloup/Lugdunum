@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -171,7 +172,13 @@ public class RecentPhotoProvider {
         JSONObject obj = new JSONObject();
         try {
             obj.put("name",photo.getName());
-            obj.put("file",photo.getImage());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            photo.getImage().compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+            imageEncoded = imageEncoded.replace("\n", "");
+
+            obj.put("file",imageEncoded);
         } catch (JSONException e) {
             e.printStackTrace();
         }
