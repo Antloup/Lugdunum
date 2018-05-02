@@ -146,7 +146,7 @@ public class RecentPhotoProvider {
 
     public void postVote(int idPhoto, float note) {
         request = "/Lugdunum/voteUpload/";
-        request += String.valueOf(idPhoto);
+        request += String.valueOf(idPhoto)+"/";
         JSONObject obj = new JSONObject();
         try {
             obj.put("note",String.valueOf(note));
