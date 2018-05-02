@@ -10,7 +10,7 @@
     >
 
     <GridLayout
-        android:id="@+id/Grid1"
+        android:id="@+id/Grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -57,6 +57,17 @@
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             />
+
+        <GridLayout
+            android:id="@+id/GridPhotos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:columnCount="2"
+            android:orientation="vertical">
+
+        </GridLayout>
 
     </GridLayout>
 

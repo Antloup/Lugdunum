@@ -91,8 +91,8 @@ public class OldPhotoProvider {
         this.oldPhotos.setValue(vec);
     }
 
-    public Vector<OldPhoto> getOldPhotos() {
-        return oldPhotos.getValue();
+    public LiveData<Vector<OldPhoto>> getOldPhotos() {
+        return oldPhotos;
     }
 
     public void postPhoto(OldPhoto photo,Place place) {
@@ -100,11 +100,10 @@ public class OldPhotoProvider {
         JSONObject obj = new JSONObject();
         try {
             obj.put("description",place.getDescription());
+            obj.put("descriptionPhoto",photo.getDescription());
             obj.put("latitude",String.valueOf(place.getLocation().latitude));
             obj.put("longitude",String.valueOf(place.getLocation().longitude));
             obj.put("name",photo.getName());
-//            obj.put("photoFormat",photo.getPhotoFormat());
-//            obj.put("description",photo.getDescription());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             photo.getImage().compress(Bitmap.CompressFormat.PNG, 100, baos);
             byte[] b = baos.toByteArray();
