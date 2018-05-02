@@ -143,6 +143,26 @@ public class RecentPhotoProvider {
         this.recentPhotos.setValue(vec);
     }
 
+    public void postVote(int idPhoto, float note) {
+        request = "/Lugdunum/voteUpload/";
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("id",String.valueOf(idPhoto));
+            obj.put("note",String.valueOf(note));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            JSONArray json = new JsonUtils()
+                    .execute(new RequestUtils(request,obj))
+                    .get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Vector<RecentPhoto> getRecentPhoto() {
         return recentPhotos.getValue();
     }

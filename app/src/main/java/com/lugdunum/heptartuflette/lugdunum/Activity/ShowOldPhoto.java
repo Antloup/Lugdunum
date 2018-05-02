@@ -161,7 +161,8 @@ public class ShowOldPhoto extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     ImageView im = (ImageView) v;
-                    compareOldPhoto(im.getDrawingCache());
+                    RecentPhoto photo = recentPhoto;
+                    compareOldPhoto(im.getDrawingCache(),photo.getId());
                 }
             });
 
@@ -181,10 +182,11 @@ public class ShowOldPhoto extends AppCompatActivity {
 
     }
 
-    private void compareOldPhoto(Bitmap recentPhoto){
+    private void compareOldPhoto(Bitmap recentPhoto, int id){
         Intent myIntent = new Intent(this, CompareOldPhoto.class);
         myIntent.putExtra("oldPhotoBitmap",oldPhotoBitmap);
         myIntent.putExtra("recentPhotoBitmap",recentPhoto);
+        myIntent.putExtra("id",id);
         startActivity(myIntent);
     }
 

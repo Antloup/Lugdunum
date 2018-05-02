@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
+import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 import com.lugdunum.heptartuflette.lugdunum.Utils.JsonUtils;
 
@@ -41,12 +42,12 @@ public class CompareOldPhoto extends AppCompatActivity {
             public void onClick(View view) {
                 RatingBar voteBar = (RatingBar) findViewById(R.id.ratingPhoto);
                 float rating = voteBar.getRating();
-                String string1 = "Rating = " + rating;
+                RecentPhotoProvider photoProvider = new RecentPhotoProvider();
+                photoProvider.postVote(getIntent().getIntExtra("id",0),rating);
+                String vote = "Votre vote : " + rating;
                 Snackbar mySnackbar = Snackbar.make(view,
-                        string1, Snackbar.LENGTH_SHORT);
+                        vote, Snackbar.LENGTH_SHORT);
                 mySnackbar.show();
-
-            //TODO : Envoyer la note sur le serveur
             }
         });
 
