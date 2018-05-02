@@ -2,7 +2,6 @@ package com.lugdunum.heptartuflette.lugdunum.Activity;
 
 import android.Manifest;
 import android.app.ActionBar;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,7 +24,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,14 +85,14 @@ public class ShowOldPhoto extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Create provider / fill content
-        oldPhotoProvider = new OldPhotoProvider(id);
-        oldPhotoProvider.FetchData();
-        recentPhotoProvider = new RecentPhotoProvider(id);
-        recentPhotoProvider.FetchData();
-        placeProvider = new PlaceProvider(id);
-        placeProvider.FetchData();
+        oldPhotoProvider = new OldPhotoProvider();
+        oldPhotoProvider.FetchData(id);
+        recentPhotoProvider = new RecentPhotoProvider();
+        recentPhotoProvider.FetchData(id);
+        placeProvider = new PlaceProvider();
+        placeProvider.FetchData(id);
         Place place = placeProvider.getPlaces().getValue().get(0);
-        final OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
+        OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
 
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
@@ -139,7 +137,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         ImageView image = null;
         for (int i = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
-            final Bitmap bitmap = recentPhoto.getImage();
+            Bitmap bitmap = recentPhoto.getImage();
 
             if (c == column) {
                 c = 0;
@@ -191,10 +189,11 @@ public class ShowOldPhoto extends AppCompatActivity {
 
     }
 
-    private void compareOldPhoto(String recentPhotoName, String oldPhotoName){
+    private void compareOldPhoto(String recentPhotoName, String oldPhotoName, int id){
         Intent myIntent = new Intent(this, CompareOldPhoto.class);
         myIntent.putExtra("oldPhotoName",oldPhotoName);
         myIntent.putExtra("recentPhotoName",recentPhotoName);
+        myIntent.putExtra("id",id);
         startActivity(myIntent);
     }
 

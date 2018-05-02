@@ -53,6 +53,15 @@
             </com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomMapView>
 
         </android.support.constraint.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/nameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/nameInput"
+            android:inputType="text" />
+
         <EditText
             android:id="@+id/dateInput"
             android:layout_width="match_parent"
@@ -60,12 +69,21 @@
             android:ems="10"
             android:hint="@string/oldPicDate"
             android:inputType="text" />
+
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/descriptionPhotoInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/add_old_photo_description"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/lieuInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/lieuInput"
             android:inputType="textMultiLine" />
 
         <Button

@@ -19,6 +19,13 @@ public class Place {
         this.description = description;
     }
 
+    public Place(LatLng location,String description, Vector<OldPhoto> oldPhotos, Vector<RecentPhoto> recentPhotos) {
+        this.location = location;
+        this.oldPhotos = oldPhotos;
+        this.recentPhotos = recentPhotos;
+        this.description = description;
+    }
+
     public LatLng getLocation() {
         return location;
     }

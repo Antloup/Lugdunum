@@ -113,4 +113,6 @@
     <string name="contribute">Contribuer</string>
     <string name="oldPicDate">Date de la photo (approx.)</string>
     <string name="refreshing">Actualisation</string>
+    <string name="nameInput">Nom de la photo</string>
+    <string name="lieuInput">Description du lieu</string>
 </resources>

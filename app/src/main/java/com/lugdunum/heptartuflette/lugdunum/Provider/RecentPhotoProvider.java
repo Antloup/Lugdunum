@@ -7,6 +7,7 @@ import android.util.Base64;
 
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Utils.JsonUtils;
+import com.lugdunum.heptartuflette.lugdunum.Utils.RequestUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,24 +27,26 @@ public class RecentPhotoProvider {
     private String request = "Lugdunum/recentPhotoList/";
     private MutableLiveData<Vector<RecentPhoto>> recentPhotos;
 
-    public RecentPhotoProvider(int id) {
-        request += id;
-
+    public RecentPhotoProvider() {
         this.recentPhotos = new MutableLiveData<Vector<RecentPhoto>>() {};
         this.recentPhotos.setValue(new Vector<RecentPhoto>());
 
     }
 
-    public void FetchData(){
+    public void FetchData(int id){
+        request += id;
         Vector<RecentPhoto> vec = recentPhotos.getValue();
         try {
+//            JSONArray json = new JsonUtils()
+//                    .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,request))
+//                    .get();
             JSONArray json = new JsonUtils()
-                    .execute(new URL(JsonUtils.protocol,JsonUtils.host,JsonUtils.port,request))
+                    .execute(new RequestUtils(request))
                     .get();
             RecentPhoto photo = null;
             for (int i = 0 ; i < json.length(); i++) {
                 JSONObject obj = json.getJSONObject(i);
-                int id = obj.getInt("id");
+                int idPhoto = obj.getInt("id");
                 String name = obj.getString("name");
                 String dateString = obj.getString("date");
 
@@ -57,7 +60,7 @@ public class RecentPhotoProvider {
                 String image = obj.getString("file");
                 byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                photo = new RecentPhoto(id,name,format,decodedByte,date,note,noteNumber);
+                photo = new RecentPhoto(idPhoto,name,format,decodedByte,date,note,noteNumber);
                 vec.add(photo);
             }
 
@@ -66,9 +69,6 @@ public class RecentPhotoProvider {
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -141,6 +141,26 @@ public class RecentPhotoProvider {
         this.recentPhotos.getValue().add(photo6);
         this.recentPhotos.getValue().add(photo7);
         this.recentPhotos.setValue(vec);
+    }
+
+    public void postVote(int idPhoto, float note) {
+        request = "/Lugdunum/voteUpload/";
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("id",String.valueOf(idPhoto));
+            obj.put("note",String.valueOf(note));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            JSONArray json = new JsonUtils()
+                    .execute(new RequestUtils(request,obj))
+                    .get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public Vector<RecentPhoto> getRecentPhoto() {
