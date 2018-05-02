@@ -47,10 +47,16 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
         contributeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                EditText mEdit = (EditText)findViewById(R.id.nameInput);
+                String name = mEdit.getText().toString();
                 if(marker == null){
                     Snackbar snackbar = Snackbar
                             .make(v, "Pas de marker", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+                else if(name == ""){
+                    Snackbar snackbar = Snackbar
+                            .make(v, "Pas de nom", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
                 else{
