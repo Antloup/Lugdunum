@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
+                // TODO Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
 
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -197,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-                return;
             }
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 // If request is cancelled, the result arrays are empty.
@@ -218,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-                return;
 
             case MY_PERMISSIONS_REQUEST_INTERNET:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -240,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-                return;
             // other 'case' lines to check for other
             // permissions this app might request.
         }
@@ -285,14 +283,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+            if(selectedImage!=null){
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            addOldPhoto(picturePath);
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                addOldPhoto(picturePath);
+            }else{
+                Log.e("MainActivity","Image data is null!");
+            }
 
 //            BitmapFactory.decodeFile(picturePath);
 

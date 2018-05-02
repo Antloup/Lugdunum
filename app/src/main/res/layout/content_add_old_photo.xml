@@ -53,13 +53,15 @@
             </com.lugdunum.heptartuflette.lugdunum.Utils.Map.CustomMapView>
 
         </android.support.constraint.ConstraintLayout>
+
         <EditText
             android:id="@+id/dateInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/oldPicDate"
-            android:inputType="text" />
+            android:inputType="date" />
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
