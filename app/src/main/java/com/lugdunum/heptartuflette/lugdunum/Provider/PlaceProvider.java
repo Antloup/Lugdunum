@@ -41,6 +41,9 @@ public class PlaceProvider {
     }
 
     public void FetchData() {
+        // Reset the vector
+        places.setValue(new Vector<Place>());
+
         // Connecting / get Json
         JsonToModel();
 
