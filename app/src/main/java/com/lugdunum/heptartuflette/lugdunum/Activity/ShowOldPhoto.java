@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -61,6 +62,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class ShowOldPhoto extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -247,7 +250,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_IMAGE_CAPTURE: {
                 // If request is cancelled, the result arrays are empty.
@@ -273,7 +276,6 @@ public class ShowOldPhoto extends AppCompatActivity {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-                return;
             }
         }
     }
@@ -296,8 +298,8 @@ public class ShowOldPhoto extends AppCompatActivity {
         File photoFile = null;
         try {
             photoFile = createImageFile();
-        } catch (IOException ex) {
-            // Error occurred while creating the File
+        } catch (Exception ex) {
+            Log.e("ShowOldPhoto","Error occurred while creating a recent photo File!");
         }
         if (photoFile != null && takePictureIntent.resolveActivity(getPackageManager()) != null) {
             userPicUri = FileProvider.getUriForFile(this,
@@ -307,17 +309,17 @@ public class ShowOldPhoto extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
-    private File createImageFile() throws IOException {
+    private File createImageFile() throws IOException, NullPointerException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);//getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        storageDir.mkdirs();
+        return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        return image;
     }
 
     @Override
