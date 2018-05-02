@@ -33,6 +33,7 @@ public class TakePhoto extends AppCompatActivity {
 
     private TextView mTextMessage;
     private Bitmap oldPhotoBitmap;
+    private Bitmap recentPhotoBitmap;
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -58,10 +59,10 @@ public class TakePhoto extends AppCompatActivity {
         String filename = getIntent().getStringExtra("imageName");
         try {
             FileInputStream is = this.openFileInput(filename);
-//            iv.setImageBitmap(BitmapFactory.decodeStream(is));
+            recentPhotoBitmap = BitmapFactory.decodeStream(is);
             RequestOptions opt = new RequestOptions();
             opt.fitCenter();
-            Glide.with(this).load(BitmapFactory.decodeStream(is)).apply(opt).into(iv);
+            Glide.with(this).load(recentPhotoBitmap).apply(opt).into(iv);
 
             is.close();
         } catch (Exception e) {
@@ -97,7 +98,7 @@ public class TakePhoto extends AppCompatActivity {
                 RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
                 //TODO: Fill Photo
                 int id = getIntent().getIntExtra("idPlace",0);
-                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",null,new Date()),id);
+                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",recentPhotoBitmap,new Date()),id);
             }
         });
 
