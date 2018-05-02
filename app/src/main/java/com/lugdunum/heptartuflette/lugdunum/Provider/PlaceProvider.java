@@ -95,26 +95,4 @@ public class PlaceProvider {
     }
 
 
-    public void postPlace(Place place) {
-        request = "/Lugdunum/placeUpload/";
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("description",place.getDescription());
-            obj.put("latitude",place.getLocation().latitude);
-            obj.put("longitude",place.getLocation().longitude);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            JSONArray json = new JsonUtils()
-                    .execute(new RequestUtils(request,obj))
-                    .get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

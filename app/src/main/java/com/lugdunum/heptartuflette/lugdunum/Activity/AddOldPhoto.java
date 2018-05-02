@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,7 @@ import com.lugdunum.heptartuflette.lugdunum.R;
 
 public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
+    MarkerOptions marker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,19 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
         contributeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                addPhoto();
+
+                if(marker == null){
+                    Snackbar snackbar = Snackbar
+                            .make(v, "Pas de marker", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+                else{
+                    addPhoto();
+                    Snackbar snackbar = Snackbar
+                            .make(v, "Photo Upload", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+
             }
         });
         // TODO: pop the current activity and don't reload main activity
@@ -53,19 +67,19 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void addPhoto() {
-        //Upload Place
-        PlaceProvider placeProvider = new PlaceProvider();
-        //TODO : fill place
-        Place place = new Place(new LatLng(10,10),"DESC",null,null);
-        placeProvider.postPlace(place);
-
-        //Upload OldPhoto
+        EditText mEdit = (EditText)findViewById(R.id.lieuInput);
+        Place place = new Place(marker.getPosition(),mEdit.getText().toString(),null,null);
         OldPhotoProvider oldPhotoProvider = new OldPhotoProvider();
         ImageView imageView = (ImageView) findViewById(R.id.oldImg);
         Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        //TODO : fill oldPhoto
-        OldPhoto oldPhoto = new OldPhoto("NAME","FORMAT",bitmap,"DATE","DESC","INFOLINK");
-        oldPhotoProvider.postPhoto(oldPhoto);
+        mEdit = (EditText)findViewById(R.id.nameInput);
+        String name = mEdit.getText().toString();
+        mEdit = (EditText)findViewById(R.id.dateInput);
+        String date = mEdit.getText().toString();
+        mEdit = (EditText)findViewById(R.id.descriptionPhotoInput);
+        String description = mEdit.getText().toString();
+        OldPhoto oldPhoto = new OldPhoto(name,"FORMAT",bitmap,date,description,"INFOLINK");
+        oldPhotoProvider.postPhoto(oldPhoto,place);
     }
 
     @Override
@@ -77,8 +91,8 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng point) {
                 mMap.clear();
-                MarkerOptions marker = new MarkerOptions().position(
-                        new LatLng(point.latitude, point.longitude)).title("New Marker");
+                marker = new MarkerOptions().position(
+                        new LatLng(point.latitude, point.longitude)).title("Position");
                 mMap.addMarker(marker);
             }
         });

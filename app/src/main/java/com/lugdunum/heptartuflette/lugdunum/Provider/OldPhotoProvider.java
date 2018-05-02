@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -94,13 +95,23 @@ public class OldPhotoProvider {
         return oldPhotos.getValue();
     }
 
-    public void postPhoto(OldPhoto photo) {
+    public void postPhoto(OldPhoto photo,Place place) {
         request = "/Lugdunum/photoUpload/";
         JSONObject obj = new JSONObject();
         try {
+            obj.put("description",place.getDescription());
+            obj.put("latitude",String.valueOf(place.getLocation().latitude));
+            obj.put("longitude",String.valueOf(place.getLocation().longitude));
             obj.put("name",photo.getName());
-            obj.put("photoFormat",photo.getPhotoFormat());
-            obj.put("description",photo.getDescription());
+//            obj.put("photoFormat",photo.getPhotoFormat());
+//            obj.put("description",photo.getDescription());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            photo.getImage().compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+            imageEncoded = imageEncoded.replace("\n", "");
+
+            obj.put("file",imageEncoded);
             obj.put("date",photo.getDate());
             obj.put("infoLink",photo.getInfoLink());
         } catch (JSONException e) {
