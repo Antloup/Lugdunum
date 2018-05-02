@@ -91,8 +91,8 @@ public class OldPhotoProvider {
         this.oldPhotos.setValue(vec);
     }
 
-    public Vector<OldPhoto> getOldPhotos() {
-        return oldPhotos.getValue();
+    public LiveData<Vector<OldPhoto>> getOldPhotos() {
+        return oldPhotos;
     }
 
     public void postPhoto(OldPhoto photo,Place place) {

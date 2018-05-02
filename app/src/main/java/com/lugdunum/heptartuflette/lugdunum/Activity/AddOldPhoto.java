@@ -1,5 +1,6 @@
 package com.lugdunum.heptartuflette.lugdunum.Activity;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -61,13 +63,11 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
                 }
                 else{
                     addPhoto();
-                    Snackbar snackbar = Snackbar
-                            .make(v, "Photo Upload", Snackbar.LENGTH_LONG);
-                    snackbar.show();
                 }
 
             }
         });
+
         // TODO: pop the current activity and don't reload main activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -86,6 +86,14 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
         String description = mEdit.getText().toString();
         OldPhoto oldPhoto = new OldPhoto(name,"FORMAT",bitmap,date,description,"INFOLINK");
         oldPhotoProvider.postPhoto(oldPhoto,place);
+
+        Context context = getApplicationContext();
+        CharSequence text = "Photo envoyée!";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        
+        this.finish();
     }
 
     @Override

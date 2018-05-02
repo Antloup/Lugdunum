@@ -1,5 +1,6 @@
 package com.lugdunum.heptartuflette.lugdunum.Provider;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -164,13 +165,12 @@ public class RecentPhotoProvider {
         }
     }
 
-    public void postPhoto(RecentPhoto photo) {
+    public void postPhoto(RecentPhoto photo,int idPlace) {
         request = "/Lugdunum/recentPhotoUpload/";
+        request += String.valueOf(idPlace)+"/";
         JSONObject obj = new JSONObject();
         try {
             obj.put("name",photo.getName());
-            obj.put("format",photo.getPhotoFormat());
-            obj.put("date",photo.getDate());
             obj.put("file",photo.getImage());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -186,8 +186,8 @@ public class RecentPhotoProvider {
         }
     }
 
-    public Vector<RecentPhoto> getRecentPhoto() {
-        return recentPhotos.getValue();
+    public LiveData<Vector<RecentPhoto>> getRecentPhoto() {
+        return recentPhotos;
     }
 
 }

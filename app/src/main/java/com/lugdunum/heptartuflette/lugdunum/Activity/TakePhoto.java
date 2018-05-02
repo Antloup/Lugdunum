@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
@@ -34,27 +36,6 @@ public class TakePhoto extends AppCompatActivity {
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
 
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +58,11 @@ public class TakePhoto extends AppCompatActivity {
         String filename = getIntent().getStringExtra("imageName");
         try {
             FileInputStream is = this.openFileInput(filename);
-            iv.setImageBitmap(BitmapFactory.decodeStream(is));
+//            iv.setImageBitmap(BitmapFactory.decodeStream(is));
+            RequestOptions opt = new RequestOptions();
+            opt.fitCenter();
+            Glide.with(this).load(BitmapFactory.decodeStream(is)).apply(opt).into(iv);
+
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +96,8 @@ public class TakePhoto extends AppCompatActivity {
             public void onClick(View v) {
                 RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
                 //TODO: Fill Photo
-                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",null,new Date()));
+                int id = getIntent().getIntExtra("idPlace",0);
+                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",null,new Date()),id);
             }
         });
 

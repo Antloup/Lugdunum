@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             // request the permission
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    new String[]{Manifest.permission.INTERNET},
                     MY_PERMISSIONS_REQUEST_INTERNET);
 
         }
@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
+                break;
             }
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 // If request is cancelled, the result arrays are empty.
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-
+                break;
             case MY_PERMISSIONS_REQUEST_INTERNET:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission granted !
@@ -239,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
+                break;
             // other 'case' lines to check for other
             // permissions this app might request.
         }
@@ -247,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void drawMarkers(Vector<Place> places) {
         if(places != null){
             mClusterManager.clearItems();
-            Log.d("drawMarkers()","CLEARED");
             for(Place p : places){
                 mClusterManager.addItem(new ClusterItemPic(p.getLocation().latitude,p.getLocation().longitude,p.getId()));
             }
