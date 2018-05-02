@@ -2,6 +2,7 @@ package com.lugdunum.heptartuflette.lugdunum.Activity;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -92,7 +93,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         placeProvider = new PlaceProvider();
         placeProvider.FetchData(id);
         Place place = placeProvider.getPlaces().getValue().get(0);
-        OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
+        final OldPhoto oldPhoto = oldPhotoProvider.getOldPhotos().get(0);
 
         //Set OldPhoto Picture
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
@@ -137,7 +138,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         ImageView image = null;
         for (int i = 0; i < total; i++, c++) {
             recentPhoto = recentPhotoProvider.getRecentPhoto().get(i);
-            Bitmap bitmap = recentPhoto.getImage();
+            final Bitmap bitmap = recentPhoto.getImage();
 
             if (c == column) {
                 c = 0;
@@ -169,7 +170,7 @@ public class ShowOldPhoto extends AppCompatActivity {
 
                     writeBitmap(bitmap,recentName);
                     writeBitmap(oldPhotoBitmap,oldName);
-                    compareOldPhoto(recentName,oldName);
+                    compareOldPhoto(recentName,oldName, recentPhoto.getId());
                 }
             });
 
