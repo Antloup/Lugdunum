@@ -23,6 +23,7 @@ import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -98,6 +99,9 @@ public class TakePhoto extends AppCompatActivity {
                 RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
                 //TODO: Fill Photo
                 int id = getIntent().getIntExtra("idPlace",0);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                recentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG,10,baos);
+                recentPhotoBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),0, baos.toByteArray().length);
                 recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",recentPhotoBitmap,new Date()),id);
             }
         });
