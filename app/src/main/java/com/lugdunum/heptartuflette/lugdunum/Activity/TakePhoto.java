@@ -3,8 +3,10 @@ package com.lugdunum.heptartuflette.lugdunum.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,17 +17,23 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
+import com.lugdunum.heptartuflette.lugdunum.Utils.FileUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
+
+import static android.os.Environment.DIRECTORY_PICTURES;
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class TakePhoto extends AppCompatActivity {
 
     private TextView mTextMessage;
     private Bitmap oldPhotoBitmap;
     private Bitmap recentPhotoBitmap;
-    String mCurrentPhotoPath;
+    private String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
 
 
@@ -47,6 +55,9 @@ public class TakePhoto extends AppCompatActivity {
 //
 //        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mCurrentPhotoPath = getIntent().getStringExtra("filename");
+
         String filename = getIntent().getStringExtra("imageName");
         try {
             FileInputStream is = this.openFileInput(filename);
@@ -78,6 +89,18 @@ public class TakePhoto extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO move from Android/data/... to Pictures/Lugdunum
+                Log.i("Path", mCurrentPhotoPath);
+                File temp = new File(mCurrentPhotoPath);
+                File dest = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES);
+                Log.i("Path", dest.getPath());
+                try {
+                    FileUtils.copyFile(temp, dest);
+                    FileUtils.deleteRecursive(temp);
+                }catch(IOException e){
+                    Log.e("TakePhoto","Error while moving the temp file !");
+                    Log.e("TakePhoto", e.getMessage()+ mCurrentPhotoPath);
+                }
                 Snackbar snackbar = Snackbar
                         .make(v, "Photo sauvegardée !", Snackbar.LENGTH_LONG);
                 snackbar.show();

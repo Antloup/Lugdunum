@@ -67,12 +67,14 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class ShowOldPhoto extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final String PHOTO_FILE ="photoFile";
     private int id;
     private OldPhotoProvider oldPhotoProvider;
     private RecentPhotoProvider recentPhotoProvider;
     private PlaceProvider placeProvider;
     private Bitmap oldPhotoBitmap;
     private Uri userPicUri;
+    private File userPicFile;
     private Bitmap recentPhotoBitmap;
     private GridLayout layout;
     private GridLayout gridPhotos;
@@ -295,16 +297,16 @@ public class ShowOldPhoto extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photoFile = null;
+        userPicFile = null;
         try {
-            photoFile = createImageFile();
+            userPicFile = createImageFile();
         } catch (Exception ex) {
             Log.e("ShowOldPhoto","Error occurred while creating a recent photo File!");
         }
-        if (photoFile != null && takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (userPicFile != null && takePictureIntent.resolveActivity(getPackageManager()) != null) {
             userPicUri = FileProvider.getUriForFile(this,
                     "com.lugdunum.heptartuflette.lugdunum.fileprovider",
-                    photoFile);
+                    userPicFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, userPicUri);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
@@ -314,7 +316,6 @@ public class ShowOldPhoto extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);//getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        storageDir.mkdirs();
         return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -343,7 +344,7 @@ public class ShowOldPhoto extends AppCompatActivity {
             //Converting bitmap to byteArray
 //            ByteArrayOutputStream _bs = new ByteArrayOutputStream();
 //            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, _bs);
-
+            myIntent.putExtra("filename", userPicFile.getAbsolutePath());
             myIntent.putExtra("imageName", fileName);
             myIntent.putExtra("oldPhotoName",oldPhotoName);
             myIntent.putExtra("idPlace",place.getId());
