@@ -1,17 +1,12 @@
 package com.lugdunum.heptartuflette.lugdunum.Activity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.content.FileProvider;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,20 +17,23 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lugdunum.heptartuflette.lugdunum.Model.RecentPhoto;
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
+import com.lugdunum.heptartuflette.lugdunum.Utils.FileUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static android.os.Environment.DIRECTORY_PICTURES;
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class TakePhoto extends AppCompatActivity {
 
     private TextView mTextMessage;
     private Bitmap oldPhotoBitmap;
     private Bitmap recentPhotoBitmap;
-    String mCurrentPhotoPath;
+    private String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
 
 
@@ -57,6 +55,9 @@ public class TakePhoto extends AppCompatActivity {
 //
 //        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mCurrentPhotoPath = getIntent().getStringExtra("filename");
+
         String filename = getIntent().getStringExtra("imageName");
         try {
             FileInputStream is = this.openFileInput(filename);
@@ -84,16 +85,30 @@ public class TakePhoto extends AppCompatActivity {
         ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
         oldImageView.setImageBitmap(oldPhotoBitmap);
 
-        Button button= (Button) findViewById(R.id.save);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button saveButton= (Button) findViewById(R.id.save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                //TODO move from Android/data/... to Pictures/Lugdunum
+                Log.i("Path", mCurrentPhotoPath);
+                File temp = new File(mCurrentPhotoPath);
+                File dest = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES);
+                Log.i("Path", dest.getPath());
+                try {
+                    FileUtils.copyFile(temp, dest);
+                    FileUtils.deleteRecursive(temp);
+                }catch(IOException e){
+                    Log.e("TakePhoto","Error while moving the temp file !");
+                    Log.e("TakePhoto", e.getMessage()+ mCurrentPhotoPath);
+                }
+                Snackbar snackbar = Snackbar
+                        .make(v, "Photo sauvegardée !", Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         });
 
-        button= (Button) findViewById(R.id.upload);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button uploadButton= (Button) findViewById(R.id.upload);
+        uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
@@ -106,42 +121,6 @@ public class TakePhoto extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.lugdunum.heptartuflette.lugdunum.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
-
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  // prefix
-                ".jpg",         // suffix
-                storageDir      // directory
-        );
-        return image;
     }
 
 }
