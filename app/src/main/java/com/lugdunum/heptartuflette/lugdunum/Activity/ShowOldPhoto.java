@@ -238,7 +238,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         try {
             //Write file
             FileOutputStream stream = this.openFileOutput(fileName, Context.MODE_PRIVATE);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
             //Cleanup
             stream.close();

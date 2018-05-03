@@ -72,9 +72,15 @@ public class TakePhoto extends AppCompatActivity {
         }
 
         filename = getIntent().getStringExtra("oldPhotoName");
+        ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
+
         try {
             FileInputStream is = this.openFileInput(filename);
             oldPhotoBitmap = BitmapFactory.decodeStream(is);
+            RequestOptions opt = new RequestOptions();
+            opt.fitCenter();
+            Glide.with(this).load(oldPhotoBitmap).apply(opt).into(oldImageView);
+
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,8 +88,7 @@ public class TakePhoto extends AppCompatActivity {
 
         // Put OldPhoto picture
 //        oldPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("oldPhotoBitmap");
-        ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
-        oldImageView.setImageBitmap(oldPhotoBitmap);
+//        oldImageView.setImageBitmap(oldPhotoBitmap);
 
         Button saveButton= (Button) findViewById(R.id.save);
         saveButton.setOnClickListener(new View.OnClickListener() {

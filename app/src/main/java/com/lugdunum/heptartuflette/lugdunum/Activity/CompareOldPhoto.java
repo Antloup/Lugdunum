@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
 import com.lugdunum.heptartuflette.lugdunum.Utils.JsonUtils;
@@ -62,28 +64,38 @@ public class CompareOldPhoto extends AppCompatActivity {
         //Fill up view
 //        oldPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("oldPhotoBitmap");
         String filename = getIntent().getStringExtra("oldPhotoName");
+        ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
+
         try {
             FileInputStream is = this.openFileInput(filename);
             oldPhotoBitmap = BitmapFactory.decodeStream(is);
+            RequestOptions opt = new RequestOptions();
+            opt.fitCenter();
+            Glide.with(this).load(oldPhotoBitmap).apply(opt).into(oldImageView);
+
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ImageView oldImageView = (ImageView) findViewById(R.id.imageViewOld);
-        oldImageView.setImageBitmap(oldPhotoBitmap);
+//        oldImageView.setImageBitmap(oldPhotoBitmap);
 
         filename = getIntent().getStringExtra("recentPhotoName");
+        ImageView recentImageView = (ImageView) findViewById(R.id.imageViewRecent);
+
         try {
             FileInputStream is = this.openFileInput(filename);
             recentPhotoBitmap = BitmapFactory.decodeStream(is);
+            RequestOptions opt = new RequestOptions();
+            opt.fitCenter();
+            Glide.with(this).load(recentPhotoBitmap).apply(opt).into(recentImageView);
+
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 //        recentPhotoBitmap = BitmapFactory.decodeFile(getIntent().getStringExtra("recentPhotoName"));
 //        recentPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("recentPhotoBitmap");
-        ImageView recentImageView = (ImageView) findViewById(R.id.imageViewRecent);
-        recentImageView.setImageBitmap(recentPhotoBitmap);
+//        recentImageView.setImageBitmap(recentPhotoBitmap);
         TextView text = findViewById(R.id.TextDate);
         String date  = getIntent().getStringExtra("recentPhotoDate");
         text.setText("Photo prise le "+date);
