@@ -5,7 +5,9 @@
 /.idea/modules.xml
 /.idea/workspace.xml
 .DS_Store
-/build
+/build/generated
+/build/intermediates
+/build/tmp
 /captures
 .externalNativeBuild
 .idea
