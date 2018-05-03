@@ -59,6 +59,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
@@ -226,6 +227,8 @@ public class ShowOldPhoto extends AppCompatActivity {
         Intent myIntent = new Intent(this, CompareOldPhoto.class);
         myIntent.putExtra("oldPhotoName",oldPhotoName);
         myIntent.putExtra("recentPhotoName",recentPhotoName);
+        DateFormat df = DateFormat.getDateInstance();
+        myIntent.putExtra("recentPhotoDate",  df.format(recentPhoto.getDate()));
         myIntent.putExtra("id",id);
         startActivity(myIntent);
     }
@@ -235,7 +238,7 @@ public class ShowOldPhoto extends AppCompatActivity {
         try {
             //Write file
             FileOutputStream stream = this.openFileOutput(fileName, Context.MODE_PRIVATE);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
             //Cleanup
             stream.close();
