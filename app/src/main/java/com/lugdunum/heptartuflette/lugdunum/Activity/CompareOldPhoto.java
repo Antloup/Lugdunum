@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.lugdunum.heptartuflette.lugdunum.Provider.RecentPhotoProvider;
 import com.lugdunum.heptartuflette.lugdunum.R;
@@ -26,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class CompareOldPhoto extends AppCompatActivity {
@@ -82,6 +84,9 @@ public class CompareOldPhoto extends AppCompatActivity {
 //        recentPhotoBitmap = (Bitmap) getIntent().getParcelableExtra("recentPhotoBitmap");
         ImageView recentImageView = (ImageView) findViewById(R.id.imageViewRecent);
         recentImageView.setImageBitmap(recentPhotoBitmap);
+        TextView text = findViewById(R.id.TextDate);
+        String date  = getIntent().getStringExtra("recentPhotoDate");
+        text.setText("Photo prise le "+date);
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
