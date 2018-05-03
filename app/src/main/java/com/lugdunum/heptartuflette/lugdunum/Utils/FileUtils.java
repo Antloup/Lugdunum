@@ -18,14 +18,13 @@ public final class FileUtils {
             String[] children = src.list();
             for (int i = 0; i < src.listFiles().length; i++) {
 
-                copyFile(new File(dst, children[i]),
+                copyFile(new File(src, children[i]),
                         new File(dst, children[i]));
             }
         } else {
-            File newFile= new File(dst.getAbsolutePath()+"/"+src.getName());
-            InputStream in = new FileInputStream(src);
 
-            OutputStream out = new FileOutputStream(newFile);
+            InputStream in = new FileInputStream(src);
+            OutputStream out = new FileOutputStream(dst);
 
             // Copy the bits from instream to outstream
             byte[] buf = new byte[1024];

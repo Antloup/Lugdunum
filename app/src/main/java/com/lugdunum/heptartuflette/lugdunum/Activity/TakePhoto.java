@@ -89,21 +89,29 @@ public class TakePhoto extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO move from Android/data/... to Pictures/Lugdunum
-                Log.i("Path", mCurrentPhotoPath);
                 File temp = new File(mCurrentPhotoPath);
-                File dest = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES);
-                Log.i("Path", dest.getPath());
+                File dest = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES+"/Lugdunum");
+                dest.mkdirs();
+                File newFile= new File(dest.getAbsolutePath()+File.separator+temp.getName());
+
                 try {
-                    FileUtils.copyFile(temp, dest);
-                    FileUtils.deleteRecursive(temp);
-                }catch(IOException e){
-                    Log.e("TakePhoto","Error while moving the temp file !");
-                    Log.e("TakePhoto", e.getMessage()+ mCurrentPhotoPath);
+                    Snackbar snackbar;
+                    if(!newFile.exists()) {
+                        FileUtils.copyFile(temp, newFile);
+                        FileUtils.deleteRecursive(temp);
+                        snackbar = Snackbar
+                                .make(v, "Photo sauvegardée dans: " + DIRECTORY_PICTURES+"/Lugdunum",
+                                        Snackbar.LENGTH_LONG);
+                    }else{
+                        snackbar = Snackbar
+                                .make(v, "Déjà sauvegardée dans: " + DIRECTORY_PICTURES+"/Lugdunum",
+                                        Snackbar.LENGTH_LONG);
+                    }
+                    snackbar.show();
+                } catch (IOException e) {
+                    Log.e("TakePhoto", "Error while moving the temp file !");
+                    Log.e("TakePhoto", e.getMessage() + mCurrentPhotoPath);
                 }
-                Snackbar snackbar = Snackbar
-                        .make(v, "Photo sauvegardée !", Snackbar.LENGTH_LONG);
-                snackbar.show();
             }
         });
 
