@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import static android.os.Environment.DIRECTORY_PICTURES;
-import static android.os.Environment.getExternalStoragePublicDirectory;
+
 
 public class TakePhoto extends AppCompatActivity {
 
@@ -94,16 +94,15 @@ public class TakePhoto extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File temp = new File(mCurrentPhotoPath);
+                File tempFile = new File(mCurrentPhotoPath);
                 File dest = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES+"/Lugdunum");
                 dest.mkdirs();
-                File newFile= new File(dest.getAbsolutePath()+File.separator+temp.getName());
+                File newFile= new File(dest.getAbsolutePath()+File.separator+tempFile.getName());
 
                 try {
                     Snackbar snackbar;
                     if(!newFile.exists()) {
-                        FileUtils.copyFile(temp, newFile);
-                        FileUtils.deleteRecursive(temp);
+                        FileUtils.copyFile(tempFile, newFile);
                         snackbar = Snackbar
                                 .make(v, "Photo sauvegardée dans: " + DIRECTORY_PICTURES+"/Lugdunum",
                                         Snackbar.LENGTH_LONG);
@@ -136,4 +135,16 @@ public class TakePhoto extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        deleteTempPictureFile();
+    }
+
+    private void deleteTempPictureFile(){
+        File tempFile = new File(mCurrentPhotoPath);
+        if(tempFile.exists()) {
+            FileUtils.deleteRecursive(tempFile);
+        }
+    }
 }
