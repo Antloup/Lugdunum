@@ -1,5 +1,7 @@
 package com.lugdunum.heptartuflette.lugdunum.Activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -26,7 +29,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import static android.os.Environment.DIRECTORY_PICTURES;
-import static android.os.Environment.getExternalStoragePublicDirectory;
+
 
 public class TakePhoto extends AppCompatActivity {
 
@@ -94,21 +97,28 @@ public class TakePhoto extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO move from Android/data/... to Pictures/Lugdunum
-                Log.i("Path", mCurrentPhotoPath);
-                File temp = new File(mCurrentPhotoPath);
-                File dest = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES);
-                Log.i("Path", dest.getPath());
+                File tempFile = new File(mCurrentPhotoPath);
+                File dest = Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES+"/Lugdunum");
+                dest.mkdirs();
+                File newFile= new File(dest.getAbsolutePath()+File.separator+tempFile.getName());
+
                 try {
-                    FileUtils.copyFile(temp, dest);
-                    FileUtils.deleteRecursive(temp);
-                }catch(IOException e){
-                    Log.e("TakePhoto","Error while moving the temp file !");
-                    Log.e("TakePhoto", e.getMessage()+ mCurrentPhotoPath);
+                    Snackbar snackbar;
+                    if(!newFile.exists()) {
+                        FileUtils.copyFile(tempFile, newFile);
+                        snackbar = Snackbar
+                                .make(v, "Photo sauvegardée dans: " + DIRECTORY_PICTURES+"/Lugdunum",
+                                        Snackbar.LENGTH_LONG);
+                    }else{
+                        snackbar = Snackbar
+                                .make(v, "Déjà sauvegardée dans: " + DIRECTORY_PICTURES+"/Lugdunum",
+                                        Snackbar.LENGTH_LONG);
+                    }
+                    snackbar.show();
+                } catch (IOException e) {
+                    Log.e("TakePhoto", "Error while moving the temp file !");
+                    Log.e("TakePhoto", e.getMessage() + mCurrentPhotoPath);
                 }
-                Snackbar snackbar = Snackbar
-                        .make(v, "Photo sauvegardée !", Snackbar.LENGTH_LONG);
-                snackbar.show();
             }
         });
 
@@ -116,16 +126,34 @@ public class TakePhoto extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
-                //TODO: Fill Photo
-                int id = getIntent().getIntExtra("idPlace",0);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                recentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG,10,baos);
-                recentPhotoBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),0, baos.toByteArray().length);
-                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",recentPhotoBitmap,new Date()),id);
+                addPhoto();
             }
         });
 
     }
 
+    protected void addPhoto(){
+        RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
+        int id = getIntent().getIntExtra("idPlace",0);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        recentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG,10,baos);
+        recentPhotoBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),0, baos.toByteArray().length);
+        recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",recentPhotoBitmap,new Date()),id);
+        Toast toast = Toast.makeText(getApplicationContext(), "Photo envoyée!", Toast.LENGTH_SHORT);
+        toast.show();
+        this.finish();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        deleteTempPictureFile();
+    }
+
+    private void deleteTempPictureFile(){
+        File tempFile = new File(mCurrentPhotoPath);
+        if(tempFile.exists()) {
+            FileUtils.deleteRecursive(tempFile);
+        }
+    }
 }
