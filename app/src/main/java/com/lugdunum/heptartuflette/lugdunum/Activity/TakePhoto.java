@@ -126,18 +126,22 @@ public class TakePhoto extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
-                int id = getIntent().getIntExtra("idPlace",0);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                recentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG,10,baos);
-                recentPhotoBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),0, baos.toByteArray().length);
-                recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",recentPhotoBitmap,new Date()),id);
-                Toast toast = Toast.makeText(getApplicationContext(), "Photo envoyée!", Toast.LENGTH_SHORT);
-                toast.show();
-                TakePhoto.this.finish();
+                addPhoto();
             }
         });
 
+    }
+
+    protected void addPhoto(){
+        RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
+        int id = getIntent().getIntExtra("idPlace",0);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        recentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG,10,baos);
+        recentPhotoBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),0, baos.toByteArray().length);
+        recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",recentPhotoBitmap,new Date()),id);
+        Toast toast = Toast.makeText(getApplicationContext(), "Photo envoyée!", Toast.LENGTH_SHORT);
+        toast.show();
+        this.finish();
     }
 
     @Override
