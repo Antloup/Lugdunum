@@ -1,5 +1,7 @@
 package com.lugdunum.heptartuflette.lugdunum.Activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -125,12 +128,14 @@ public class TakePhoto extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RecentPhotoProvider recentPhotoProvider = new RecentPhotoProvider();
-                //TODO: Fill Photo
                 int id = getIntent().getIntExtra("idPlace",0);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 recentPhotoBitmap.compress(Bitmap.CompressFormat.JPEG,10,baos);
                 recentPhotoBitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),0, baos.toByteArray().length);
                 recentPhotoProvider.postPhoto(new RecentPhoto("NAME","FORMAT",recentPhotoBitmap,new Date()),id);
+                Toast toast = Toast.makeText(getApplicationContext(), "Photo envoyée!", Toast.LENGTH_SHORT);
+                toast.show();
+                TakePhoto.this.finish();
             }
         });
 

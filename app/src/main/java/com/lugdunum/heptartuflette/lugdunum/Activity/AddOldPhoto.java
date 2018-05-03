@@ -87,10 +87,7 @@ public class AddOldPhoto extends AppCompatActivity implements OnMapReadyCallback
         OldPhoto oldPhoto = new OldPhoto(name,"FORMAT",bitmap,date,description,"INFOLINK");
         oldPhotoProvider.postPhoto(oldPhoto,place);
 
-        Context context = getApplicationContext();
-        CharSequence text = "Photo envoyée!";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
+        Toast toast = Toast.makeText(getApplicationContext(), "Photo envoyée!", Toast.LENGTH_SHORT);
         toast.show();
         
         this.finish();
